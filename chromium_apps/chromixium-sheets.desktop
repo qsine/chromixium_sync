@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Google Sheets
+Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=felcaaldnbdncclmgdcncolpebgiejap
+Icon=chrome-felcaaldnbdncclmgdcncolpebgiejap-Default
+StartupWMClass=crx_felcaaldnbdncclmgdcncolpebgiejap
+NoDisplay=false
+Categories=Office;

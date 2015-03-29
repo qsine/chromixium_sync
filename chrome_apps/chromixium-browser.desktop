@@ -1,0 +1,27 @@
+[Desktop Entry]
+Version=1.0
+StartupWMClass=Chromium-browser
+Name=Chrome
+# Only KDE 4 seems to use GenericName, so we reuse the KDE strings.
+# From Ubuntu's language-pack-kde-XX-base packages, version 9.04-20090413.
+GenericName=Web Browser
+# Not translated in KDE, from Epiphany 2.26.1-0ubuntu1.
+# Gnome and KDE 3 uses Comment.
+Comment=Access the Internet
+Exec=chromium-browser %U
+Terminal=false
+Icon=/usr/share/pixmaps/chromixium/google-chrome.png
+Type=Application
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml_xml;image/webp;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;
+X-Ayatana-Desktop-Shortcuts=NewWindow;NewIncognito
+
+[NewWindow Shortcut Group]
+Name=New Window
+Exec=chromium-browser
+TargetEnvironment=Unity
+
+[NewIncognito Shortcut Group]
+Name=New Incognito Window
+Exec=chromium-browser --incognito
+TargetEnvironment=Unity

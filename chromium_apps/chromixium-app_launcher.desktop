@@ -1,0 +1,13 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Name=App Launcher
+Comment=Access all your Google Apps
+Exec=chromium-browser --show-app-list
+Terminal=false
+Type=Application
+Icon=/usr/share/icons/chromixium/apps/scalable/chromium-app-list.svg
+StartupWMClass=chromium_app_list
+StartupNotify=false
+Categories=Network;Internet;System;

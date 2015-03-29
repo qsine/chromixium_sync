@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=WordPress
+Exec=/usr/bin/chromium-browser --app=https://wordpress.com/
+Icon=chrome-https___wordpress.com_
+StartupWMClass=wordpress.com
+NoDisplay=true

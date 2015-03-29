@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=YouTube
+Exec=chromium-browser --profile-directory=Default --app-id=blpcfgokakmgnkcojhhkbfbldkacnbeo
+Icon=/usr/share/pixmaps/chromixium/chrome-blpcfgokakmgnkcojhhkbfbldkacnbeo-Default.png
+StartupWMClass=crx_blpcfgokakmgnkcojhhkbfbldkacnbeo
+NoDisplay=false
+Categories=Network;Internet;AudioVideo;

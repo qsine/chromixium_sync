@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Google Docs
+Exec=/usr/bin/chromium-browser --app=https://docs.google.com/document/u/0/
+Icon=chrome-https___docs.google.com_document_u_0_
+StartupWMClass=crx_aohghmighlieiainnegkcijnfilokake
+NoDisplay=false
+Categories=Office;

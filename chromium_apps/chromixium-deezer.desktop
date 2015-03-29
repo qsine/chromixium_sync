@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Deezer
+Exec=/usr/bin/chromium-browser --app=http://www.deezer.com/
+Icon=chrome-http___www.deezer.com_
+StartupWMClass=www.deezer.com
+NoDisplay=true

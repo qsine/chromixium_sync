@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=reddit
+Exec=/usr/bin/chromium-browser --app=http://www.reddit.com/
+Icon=chrome-http___www.reddit.com_
+StartupWMClass=www.reddit.com
+NoDisplay=true

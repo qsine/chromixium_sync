@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Google Slides
+Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=aapocclcgogkmnckokdopfmhonfmgoek
+Icon=chrome-aapocclcgogkmnckokdopfmhonfmgoek-Default
+StartupWMClass=crx_aapocclcgogkmnckokdopfmhonfmgoek
+NoDisplay=false
+Categories=Office;

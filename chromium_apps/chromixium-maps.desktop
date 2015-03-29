@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Google Maps
+Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=lneaknkopdijkpnocmklfnjbeapigfbh
+Icon=chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default
+StartupWMClass=crx_lneaknkopdijkpnocmklfnjbeapigfbh
+NoDisplay=false
+Categories=Network;Internet;

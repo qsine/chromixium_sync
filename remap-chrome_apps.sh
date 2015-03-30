@@ -74,13 +74,13 @@ if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
     cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/pixmaps/* "$APP_ICONS"/ || true
   fi
   chown "$SYNC_USER:$SYNC_USER" "$USER_APPS"/*
-  chmod "644" "$USER_APPS"/*
+  chmod "750" "$USER_APPS"/*
 
   # delete old launchers and copy in adjusted stock ones
   rm "$USER_DOCK"/launchers/chrom* || true
   cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/launchers/* "$USER_DOCK"/launchers/
   chown "$SYNC_USER:$SYNC_USER" "$USER_DOCK"/launchers/*
-  chmod "644" "$USER_DOCK"/launchers/*
+  chmod "750" "$USER_DOCK"/launchers/*
   # repoint launchers to user home directory 
   for f in "$USER_DOCK"/launchers/*; do
     OLDPATH="switch_path"
@@ -89,6 +89,85 @@ if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
   done
 fi
 #============= remap apps and launcher end ================================
+
+#============= home directories start ================================
+# create directory in Google Data that will push/pull
+#  and make a link to for user Desktop in nautilus below
+$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_HFILES" "$GOOGLE_DATA/$CHRMX_HFILES" "$SYNC_USER" -e
+
+# make sure user-dir update is off so manual changes stick 
+echo "enabled=False" > ~/.config/user-dirs.conf
+
+# check if home Desktop directory is not linked
+if [ ! -h "$DEST_HOME/Desktop" ]; then
+  # and if it still exists
+  if [ -d "$DEST_HOME/Desktop" ]; then
+    # if there are files move them
+    if [ "$(ls -A $DEST_HOME/Desktop)" ]; then
+      mv "$DEST_HOME/Desktop/"* "$GOOGLE_DATA/$CHRMX_HFILES/"
+    fi
+    # get rid of it
+    rmdir "$DEST_HOME/Desktop"
+  fi
+  ln -s -f "$GOOGLE_DATA/$CHRMX_HFILES" "$DEST_HOME/Desktop"
+  echo "  - USER_HOMEPP:$USER_HOMEPP link created"
+else
+  rm "$DEST_HOME/Desktop"
+  ln -s -f "$GOOGLE_DATA/$CHRMX_HFILES" "$DEST_HOME/Desktop"
+  echo "  - USER_HOMEPP:$USER_HOMEPP link updated"
+fi
+
+# create LocalFiles in user home that does not push/pull to Google Drive
+$CHROMIXIUM_SCRIPTS/custom-dir.sh "LOCAL_FILES" "$LOCAL_FILES" "$SYNC_USER" -e
+
+# move home directories and reconfig user dirs
+if [ -d "$DEST_HOME/Desktop" ]; then
+  echo "Desktop is used to push/pull files to Google Drive"
+fi
+if [ -d "$DEST_HOME/Documents" ]; then
+  mv "$DEST_HOME/Documents" "$LOCAL_FILES/Documents"
+  OLDLINE='XDG_DOCUMENTS_DIR="$HOME/Documents"'
+  NEWLINE='XDG_DOCUMENTS_DIR="$HOME/'${LOCAL_FILES##*/}'/Documents"'
+  sed -i "s%$OLDLINE%$NEWLINE%g" $DEST_HOME/.config/user-dirs.dirs
+fi
+if [ -d "$DEST_HOME/Downloads" ]; then
+  mv "$DEST_HOME/Downloads" "$LOCAL_FILES/Downloads"
+  OLDLINE='XDG_DOWNLOAD_DIR="$HOME/Downloads"'
+  NEWLINE='XDG_DOWNLOAD_DIR="$HOME/'${LOCAL_FILES##*/}'/Downloads"'
+  sed -i "s%$OLDLINE%$NEWLINE%g" $DEST_HOME/.config/user-dirs.dirs
+fi
+if [ -d "$DEST_HOME/Music" ]; then
+  mv "$DEST_HOME/Music" "$LOCAL_FILES/Music"
+  OLDLINE='XDG_MUSIC_DIR="$HOME/Music"'
+  NEWLINE='XDG_MUSIC_DIR="$HOME/'${LOCAL_FILES##*/}'/Music"'
+  sed -i "s%$OLDLINE%$NEWLINE%g" $DEST_HOME/.config/user-dirs.dirs
+fi
+if [ -d "$DEST_HOME/Pictures" ]; then
+  mv "$DEST_HOME/Pictures" "$LOCAL_FILES/Pictures"
+  OLDLINE='XDG_PICTURES_DIR="$HOME/Pictures"'
+  NEWLINE='XDG_PICTURES_DIR="$HOME/'${LOCAL_FILES##*/}'/Pictures"'
+  sed -i "s%$OLDLINE%$NEWLINE%g" $DEST_HOME/.config/user-dirs.dirs
+fi
+if [ -d "$DEST_HOME/Public" ]; then
+  mv "$DEST_HOME/Public" "$LOCAL_FILES/Public"
+  OLDLINE='XDG_PUBLICSHARE_DIR="$HOME/Public"'
+  NEWLINE='XDG_PUBLICSHARE_DIR="$HOME/'${LOCAL_FILES##*/}'/Public"'
+  sed -i "s%$OLDLINE%$NEWLINE%g" $DEST_HOME/.config/user-dirs.dirs
+fi
+if [ -d "$DEST_HOME/Templates" ]; then
+  mv "$DEST_HOME/Templates" "$LOCAL_FILES/Templates"
+  OLDLINE='XDG_TEMPLATES_DIR="$HOME/Templates"'
+  NEWLINE='XDG_TEMPLATES_DIR="$HOME/'${LOCAL_FILES##*/}'/Templates"'
+  sed -i "s%$OLDLINE%$NEWLINE%g" $DEST_HOME/.config/user-dirs.dirs
+fi
+if [ -d "$DEST_HOME/Videos" ]; then
+  mv "$DEST_HOME/Videos" "$LOCAL_FILES/Videos"
+  OLDLINE='XDG_VIDEOS_DIR="$HOME/Videos"'
+  NEWLINE='XDG_VIDEOS_DIR="$HOME/'${LOCAL_FILES##*/}'/Videos"'
+  sed -i "s%$OLDLINE%$NEWLINE%g" $DEST_HOME/.config/user-dirs.dirs
+fi
+
+#============= home directories end ================================
 
 echo "# "
 echo "# Exiting: remap-chrome_apps.sh"

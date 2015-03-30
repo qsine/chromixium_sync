@@ -7,6 +7,6 @@ Type=Application
 Name=Google Drive
 Exec=/usr/bin/chromium-browser "--app=https://drive.google.com/drive/#my-drive"
 Icon=chrome-apdfllckaahabafndbhieahigkjlhalf-Default
-StartupWMClass=crx_apdfllckaahabafndbhieahigkjlhalf
+StartupWMClass=drive.google.com__drive
 NoDisplay=false
 Categories=Utility;

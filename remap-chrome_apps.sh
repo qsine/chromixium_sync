@@ -77,13 +77,13 @@ if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
     cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/pixmaps/* "$APP_ICONS"/ || true
   fi
   chown "$SYNC_USER:$SYNC_USER" "$USER_APPS"/*
-  chmod "750" "$USER_APPS"/*
+  chmod "644" "$USER_APPS"/*
 
   # delete old launchers and copy in adjusted stock ones
-  rm "$USER_DOCK"/launchers/chrome* || true
+  rm "$USER_DOCK"/launchers/chrom* || true
   cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/launchers/* "$USER_DOCK"/launchers/
   chown "$SYNC_USER:$SYNC_USER" "$USER_DOCK"/launchers/*
-  chmod "750" "$USER_DOCK"/launchers/*
+  chmod "644" "$USER_DOCK"/launchers/*
   # repoint launchers to user home directory 
   for f in "$USER_DOCK"/launchers/*; do
     OLDPATH="switch_path"

@@ -7,5 +7,5 @@ Type=Application
 Name=Gmail
 Exec=/usr/bin/chromium-browser --app=https://www.gmail.com
 Icon=/usr/share/pixmaps/chromixium/gmail.png
-StartupWMClass=crx_pjkljhegncpnkpknbcohdijeoejaedia
+StartupWMClass=www.gmail.com
 Categories=Network;Internet;

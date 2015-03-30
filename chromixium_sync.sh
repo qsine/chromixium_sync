@@ -23,7 +23,7 @@ if [ ! "$1" ]; then
 else
   if [ "$1" = '--help' -o "$1" = '-h' ]; then
     echo ""
-    echo "Usage: qsine-config.sh " '"config_code" "repo_name" "user_name"'
+    echo "Usage: chromixium_sync.sh " '"config_code" "repo_name" "user_name"'
     echo "  Where:"
     echo "     config_code: controls what the installer does"
     echo "        --install: install std programs & setup push/pull RUN FIRST!"
@@ -85,8 +85,10 @@ CS_STATE=2 # calling command valid argument 1
 if [ ! "$2" ]; then
   echo "No REPO_PROFILE specified, assuming $DEF_NAME"
   GET_NAMES="$DEF_NAME"
+  DEF_REPO="$DEF_NAME"
 else
   GET_NAMES="$2"
+  DEF_REPO="$2"
 fi
 # check argument 3
 if [ ! "$3" ]; then
@@ -94,6 +96,7 @@ if [ ! "$3" ]; then
   GET_NAMES="$GET_NAMES"'<,>'"$DEF_NAME"
 else
   GET_NAMES="$GET_NAMES"'<,>'"$3"
+  DEF_NAME="$3"
 fi
 
 # more than one user can be sync's to Google Drive
@@ -108,7 +111,7 @@ if [ $CONFIG_CODE = "gui" ]; then
   GET_NAMES=$(zenity --forms --title="Qsine Configuration/Sync Utility" \
 	--text="Sync Chromixium settings to Google Drive" \
 	--separator="<,>" \
-	--add-entry="Repo Name: (Default:$DEF_NAME)" \
+	--add-entry="Repo Name: (Default:$DEF_REPO)" \
 	--add-entry="Chromixium User (Default:$DEF_NAME)" \
         )
 fi
@@ -128,7 +131,7 @@ case $? in
 
           # test default is accepted
           if [ "$name" = "<" ] ; then
-            name="$DEF_NAME"
+            name="$DEF_REPO"
           else
             name=${name:0:(${#name}-1)}
           fi

@@ -7,5 +7,5 @@ Type=Application
 Name=YouTube
 Exec=/usr/bin/chromium-browser --app=https://www.youtube.com/
 Icon=/usr/share/pixmaps/chromixium/youtube.png
-StartupWMClass=crx_blpcfgokakmgnkcojhhkbfbldkacnbeo
+StartupWMClass=www.youtube.com
 Categories=Multimedia;Video;

@@ -17,17 +17,13 @@ set -e
 $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE" "$BACKUP_BASE" "$SYNC_USER" -e
 
 # APP_SHARE="/usr/share/applications"
-if [ "$(ls -A $APP_SHARE | grep chrom)" ]; then
+if [ "$(ls -A $APP_SHARE | grep chrom)" -o "$(ls -A $APP_SHARE | grep google)" ]; then
   TIMESTAMP="$(date +%Y_%m_%d_%H_%M_%S)-usr_share_applications"
   echo "Found Chrome shortcuts in APP_SHARE:$APP_SHARE..."
   echo "  - moving to: $BACKUP_BASE/$TIMESTAMP"
   $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE/TIMESTAMP" "$BACKUP_BASE/$TIMESTAMP" "$SYNC_USER" -e
-  if [ "$(find $APP_SHARE -name chrom*)" ]; then
-    mv "$APP_SHARE"/chrom* "$BACKUP_BASE/$TIMESTAMP"
-  fi
-  if [ "$(find $APP_SHARE -name google*)" ]; then
-    mv "$APP_SHARE"/google* "$BACKUP_BASE/$TIMESTAMP"
-  fi
+  mv "$APP_SHARE"/chrom* "$BACKUP_BASE/$TIMESTAMP"  || true
+  mv "$APP_SHARE"/google* "$BACKUP_BASE/$TIMESTAMP" || true
   chown -R $SYNC_USER:$SYNC_USER "$BACKUP_BASE/$TIMESTAMP"
 else
   echo "    -no Chrome shortcuts in $APP_SHARE"
@@ -65,6 +61,7 @@ for f in "$USER_APPS"/chromixium*; do
 done
 echo "CHROM_FILE_COUNT:$CHROM_FILE_COUNT"
 if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
+  rm "$USER_APPS"/chromixium* || true
   echo "# copy in chromium desktop files"
   cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/* "$USER_APPS"/ || true
   # if chrome is installed install chrome adjusted shortcuts

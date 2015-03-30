@@ -544,7 +544,7 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
       zenity --question --text="Switch from Chromium to Chrome?"
       if [ "$?" = 0 ]; then
         (
-        $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh -e
+        . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh -e
         ) | zenity --progress \
           --title="Switch to Chrome..." \
           --text="Install Chrome..." \
@@ -559,7 +559,7 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
       while true; do
         read -p "Switch from Chromium to Chrome? (y/n):" yn
         case $yn in
-          [Yy]* ) $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh -e
+          [Yy]* ) . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh -e
                   break
                   ;;
           [Nn]* ) break

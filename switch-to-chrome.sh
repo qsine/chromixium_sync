@@ -6,7 +6,8 @@ echo "Running: switch-to-chrome.sh"
 # removes chromium and pepperflash
 # installs chrome stable, .deb is in /tmp and will be deteled on restart
 # build link to start chome on chromium calls
-# can be used stand alone
+# for use with Qsine installer
+# call with "." to inherit environment variables from parent
 
 # abort on error 
 set -e
@@ -50,6 +51,7 @@ if [ "" == "$PKG_OK" ]; then
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
   dpkg -i google-chrome-stable_current_i386.deb
   ln -s -f /usr/bin/google-chrome /usr/bin/chromium-browser
+  rm "$USER_APPS"/chromixium* || true
 fi
 
 # NOTE: leave the autostart and make all chome shortcuts call chromium browser 

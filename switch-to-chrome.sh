@@ -25,7 +25,11 @@ for i in {1..2}; do
     PKG_NAME="pepperflashplugin-nonfree"
   fi
 
-  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed") || true
+  # no error abort
+  set +e
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
+  # abort on error 
+  set -e
   echo Checking for $PKG_NAME: $PKG_OK
   if [ ! "" == "$PKG_OK" ]; then
     REMOVED_PKGS=$REMOVED_PKGS+1
@@ -42,7 +46,9 @@ fi
 # install chrome
 
 PKG_NAME=google-chrome-stable
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed") || true
+# no error abort
+set +e
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
 echo Checking for $PKG_NAME: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
   echo "$PKG_NAME not installed. Adding $PKG_NAME."
@@ -51,8 +57,10 @@ if [ "" == "$PKG_OK" ]; then
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
   dpkg -i google-chrome-stable_current_i386.deb
   ln -s -f /usr/bin/google-chrome /usr/bin/chromium-browser
-  rm "$USER_APPS"/chromixium* || true
+  rm "$USER_APPS"/chromixium*
 fi
+# abort on error 
+set -e
 
 # NOTE: leave the autostart and make all chome shortcuts call chromium browser 
 # it works if chromium is left installed

@@ -52,7 +52,11 @@ for i in {1..2}; do
   fi
 
   echo "Checking for $PKG_NAME: $PKG_OK"
-  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed") || true
+  # no error abort
+  set +e
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
+  # abort on error 
+  set -e
   if [ "" == "$PKG_OK" ]; then
     echo "No $PKG_NAME. Setting up $PKG_NAME."
     apt-get -y install $PKG_NAME

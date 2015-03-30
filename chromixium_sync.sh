@@ -393,7 +393,11 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
       fi
       # install Git if missing
       echo "Checking for Git"
-      PKG_OK=$(dpkg-query -W --showformat='${Status}\n' git|grep "install ok installed") || true
+      # no error abort
+      set +e
+      PKG_OK=$(dpkg-query -W --showformat='${Status}\n' git|grep "install ok installed")
+      # abort on error 
+      set -e
       if [ "" == "$PKG_OK" ]; then
         echo "No Git. Setting it up..."
         aptitude install -y git
@@ -536,11 +540,17 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
 
   # switch to chrome from chromium
   PKG_NAME=google-chrome-stable
-  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed") || true
-  echo Checking for $PKG_NAME: $PKG_OK
+  # no error abort 
+  set +e
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
+  # abort on error 
+  set -e
+  echo "Checking for $PKG_NAME: $PKG_OK"
   if [ "" == "$PKG_OK" ]; then
-    echo "$PKG_NAME not installed. Adding $PKG_NAME."
+    echo "$PKG_NAME not installed."
     if [ "$RUN_MODE" = "gui" ]; then
+      # no error abort 
+      set +e
       zenity --question --text="Switch from Chromium to Chrome?"
       if [ "$?" = 0 ]; then
         (
@@ -553,7 +563,11 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
         if [ "$?" = -1 ]; then
           zenity --error --text="Chrome install cancelled."
         fi
+      else
+        echo "zenity=$?, continiung" 
       fi
+      # abort on error 
+      set -e
     else # cmd mode
       echo ""
       while true; do

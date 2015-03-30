@@ -22,8 +22,12 @@ if [ "$(ls -A $APP_SHARE | grep chrom)" -o "$(ls -A $APP_SHARE | grep google)" ]
   echo "Found Chrome shortcuts in APP_SHARE:$APP_SHARE..."
   echo "  - moving to: $BACKUP_BASE/$TIMESTAMP"
   $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE/TIMESTAMP" "$BACKUP_BASE/$TIMESTAMP" "$SYNC_USER" -e
-  mv "$APP_SHARE"/chrom* "$BACKUP_BASE/$TIMESTAMP"  || true
-  mv "$APP_SHARE"/google* "$BACKUP_BASE/$TIMESTAMP" || true
+  # no error abort
+  set +e
+  mv "$APP_SHARE"/chrom* "$BACKUP_BASE/$TIMESTAMP"
+  mv "$APP_SHARE"/google* "$BACKUP_BASE/$TIMESTAMP"
+  # abort on error 
+  set -e
   chown -R $SYNC_USER:$SYNC_USER "$BACKUP_BASE/$TIMESTAMP"
 else
   echo "    -no Chrome shortcuts in $APP_SHARE"
@@ -61,23 +65,25 @@ for f in "$USER_APPS"/chromixium*; do
 done
 echo "CHROM_FILE_COUNT:$CHROM_FILE_COUNT"
 if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
-  rm "$USER_APPS"/chromixium* || true
+  # no error abort
+  set +e
+  rm "$USER_APPS"/chromixium*
   echo "# copy in chromium desktop files"
-  cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/* "$USER_APPS"/ || true
+  cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/* "$USER_APPS"/
   # if chrome is installed install chrome adjusted shortcuts
   PKG_NAME=google-chrome-stable
-  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed") || true
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
   echo Checking for $PKG_NAME: $PKG_OK
   if [ "install ok installed" == "$PKG_OK" ]; then
     echo "# copy in chrome adjusted shortcuts and icons"
-    cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/* "$USER_APPS"/ || true
-    cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/pixmaps/* "$APP_ICONS"/ || true
+    cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/* "$USER_APPS"/
+    cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/pixmaps/* "$APP_ICONS"/
   fi
   chown "$SYNC_USER:$SYNC_USER" "$USER_APPS"/*
   chmod "750" "$USER_APPS"/*
 
   # delete old launchers and copy in adjusted stock ones
-  rm "$USER_DOCK"/launchers/chrom* || true
+  rm "$USER_DOCK"/launchers/chrom*
   cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/launchers/* "$USER_DOCK"/launchers/
   chown "$SYNC_USER:$SYNC_USER" "$USER_DOCK"/launchers/*
   chmod "750" "$USER_DOCK"/launchers/*
@@ -87,6 +93,8 @@ if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
     NEWPATH="$USER_APPS"
     sed -i "s%$OLDPATH%$NEWPATH%g" $f
   done
+  # abort on error 
+  set -e
 fi
 #============= remap apps and launcher end ================================
 

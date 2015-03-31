@@ -660,7 +660,7 @@ if [ "${RUN_MODE}" = "gui" ]; then
   zenity --info --text="Chromixium Sync complete."
 fi
 
-if [ $REBOOT_FLAG == 1 ]
+if [ $REBOOT_FLAG == 1 ]; then
     if [ "$RUN_MODE" = "gui" ]; then
       # no error abort 
       set +e

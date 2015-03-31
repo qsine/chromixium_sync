@@ -57,7 +57,8 @@ if [ "" == "$PKG_OK" ]; then
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
   dpkg -i google-chrome-stable_current_i386.deb
   ln -s -f /usr/bin/google-chrome /usr/bin/chromium-browser
-  rm "$USER_APPS"/chromixium*
+  sleep 5
+  rm "$USER_APPS"/chrom*
 fi
 # abort on error 
 set -e

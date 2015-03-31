@@ -77,7 +77,7 @@ if [ ! "$(ls -A ${GOPATH_DIR})" ]; then
   # add GOPATH and put binaries in PATH of .bashrc
   # so scripts can use the drive command
   echo "" >> ${BASH_HOME_PATH}/.bashrc
-  echo "# added by Kev for ODEKE drive commands using GO" >> ${BASH_HOME_PATH}/.bashrc
+  echo " added by Kev for ODEKE drive commands using GO" >> ${BASH_HOME_PATH}/.bashrc
   echo GOPATH=${GOPATH_DIR}>> ${BASH_HOME_PATH}/.bashrc
   echo PATH='$PATH':'$GOPATH'/bin >> ${BASH_HOME_PATH}/.bashrc
 

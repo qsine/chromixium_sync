@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "# "
-echo "# Running: push-to-drive.sh"
+echo " "
+echo " Running: push-to-drive.sh"
 # by Kevin Saruwatari, 29-Mar-2015
 # free to use with no warranty
 # for use with Qsine installer
@@ -15,7 +15,7 @@ set -e
 
 # must change to GDATA directory to push/pull
 cd "$GOOGLE_DATA"
-echo "# Changed to:$(dirname "$(readlink -f "$0")")"
+echo " Changed to:$(dirname "$(readlink -f "$0")")"
 
 #:::::::::::::::::: linked directories :::::::::::::::::::::
 # 01 gtk3: misc file/desktop setting
@@ -43,7 +43,7 @@ $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_DOCK" "$GOOGLE_DATA/$CHRMX_DOCK" "750
 #   don't exist in stock install so create it to keep error checking in sync-as-root valid
 if [ ! -d "$USER_SCRNL" ]; then
   $CHROMIXIUM_SCRIPTS/custom-dir.sh "USER_SCRNL" "$USER_SCRNL" "$SYNC_USER" -e
-  echo "# a file is required for chromixium_sync" >> "$USER_SCRNL"/chrx-readme
+  echo " a file is required for chromixium_sync" >> "$USER_SCRNL"/chrx-readme
 fi
 $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_SCRNL" "$GOOGLE_DATA/$CHRMX_SCRNL" "750" "$SYNC_USER"
 
@@ -57,7 +57,7 @@ $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$DEST_HOME/.face" "$GOOGLE_DATA/$CHRMX_REPO
 #:::::::::::::::::: sync root files :::::::::::::::::::::
 # 01 greeter user icon
 #---------------------------------------------------
-echo "# Ignore greeter icon, use dock icon for pull"
+echo " Ignore greeter icon, use dock icon for pull"
 #
 
 #:::::::::::::::::: sync root directories :::::::::::::::::::::
@@ -72,16 +72,16 @@ $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$WALLS_USR" "$GOOGLE_DATA/$CHRMX_WALLS" "64
 
 #===================== push start ================================
 # push GOOGLE_DATA to the Drive
-echo "# Push buffer to Google Drive..."
+echo " Push buffer to Google Drive..."
 
 # push current repo 
 drive push -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 
-echo "# Buffer pushed to Google Drive"
+echo " Buffer pushed to Google Drive"
 #============= push end ================================
 
 # must change back to scripts directory
 cd "$CHROMIXIUM_SCRIPTS"
-echo "# Changed to:$(dirname "$(readlink -f "$0")")"
+echo " Changed to:$(dirname "$(readlink -f "$0")")"
 
-echo "# "
-echo "# Exiting: push-to-drive.sh"
+echo " "
+echo " Exiting: push-to-drive.sh"

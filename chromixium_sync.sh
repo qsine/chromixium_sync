@@ -495,7 +495,7 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
   if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
     if [ "${RUN_MODE}" = "gui" ]; then
       (
-      echo "# update Ubuntu repos and upgrade"
+      echo "update Ubuntu repos and upgrade"
       apt-get update
       apt-get -y dist-upgrade
       echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
@@ -518,9 +518,9 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
   if [ "$GET_SCRIPTS" = "git" ]; then
     if [ "${RUN_MODE}" = "gui" ]; then
       (
-      echo "#  -CHROMIXIUM_SCRIPTS:${CHROMIXIUM_SCRIPTS} already installed, updating from Git"
+      echo "  -CHROMIXIUM_SCRIPTS:${CHROMIXIUM_SCRIPTS} already installed, updating from Git"
       cd "${CHROMIXIUM_SCRIPTS}"
-      echo "# Changed to:$(dirname "$(readlink -f "$0")")"
+      echo " Changed to:$(dirname "$(readlink -f "$0")")"
       git pull
       ) | zenity --progress \
           --title="Sync Scripts..." \
@@ -588,7 +588,7 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
   # remap chrome apps
   if [ "${RUN_MODE}" = "gui" ]; then
     (
-    echo "#  ..remap chrome apps"
+    echo "  ..remap chrome apps"
     . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh -e
     ) | zenity --progress \
       --title="Remap Chrome Apps..." \
@@ -606,7 +606,7 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
   # clean up
   if [ "${RUN_MODE}" = "gui" ]; then
     (
-    echo "#  ..clearing any unused packages"
+    echo "  ..clearing any unused packages"
     apt-get -y autoremove
     echo "done."
     ) | zenity --progress \

@@ -95,6 +95,7 @@ if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
   done
   # abort on error 
   set -e
+  REBOOT_FLAG=1
 fi
 #============= remap apps and launcher end ================================
 

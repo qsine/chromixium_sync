@@ -12,6 +12,7 @@ echo "GOPATH:$GOPATH"
 GET_SCRIPTS="git" # "git" or "copy"
 CS_STATE=0 # installation in unknown status
 DEF_NAME=$SUDO_USER
+REBOOT_FLAG=0
 
 #---------------------------------------------------
 
@@ -659,3 +660,30 @@ echo "Exiting: chromixium_sync.sh"
 if [ "${RUN_MODE}" = "gui" ]; then
   zenity --info --text="Chromixium Sync complete."
 fi
+
+if [ $REBOOT_FLAG == 1 ]
+    if [ "$RUN_MODE" = "gui" ]; then
+      # no error abort 
+      set +e
+      zenity --question --text="Reboot required, restart now?"
+      if [ "$?" = 0 ]; then
+        reboot
+      fi
+      # abort on error 
+      set -e
+    else # cmd mode
+      echo ""
+      while true; do
+        read -p "Reboot required, restart now? (y/n):" yn
+        case $yn in
+          [Yy]* ) reboot
+                  break
+                  ;;
+          [Nn]* ) break
+                  ;;
+           * ) echo "Please answer y or n"
+               ;;
+        esac
+      done
+    fi # end gui/cmd line confirm
+fi # end restart

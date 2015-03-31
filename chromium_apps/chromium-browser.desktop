@@ -1,4 +1,8 @@
+#!/usr/bin/env xdg-open
+
 [Desktop Entry]
+# this file must keep the real name chromium-browser.desktop
+
 Version=1.0
 Name=Chromium
 Name[ast]=Restolador web Chromium

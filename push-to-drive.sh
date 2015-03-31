@@ -9,11 +9,6 @@ echo "# Running: push-to-drive.sh"
 # abort on error 
 set -e
 
-# initiate directories
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_BASE" "$GOOGLE_DATA/$CHRMX_BASE" "$SYNC_USER" -e
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_SYNC" "$GOOGLE_DATA/$CHRMX_SYNC" "$SYNC_USER" -e
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_REPO" "$GOOGLE_DATA/$CHRMX_REPO" "$SYNC_USER" -e
-
 # fix chrome shortcuts from creating duplicate/default icons on plank
 . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh -e
 

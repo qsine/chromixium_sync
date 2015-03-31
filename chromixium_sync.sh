@@ -237,7 +237,6 @@ UDATA_BASE="$DEST_HOME/.local/share/chrxsync"
 #  GNU/Linux user name.  Hence one Google account can be used to sync multiple
 #  users or multiple profiles for single user.
 CHRMX_BASE="Chromixium"
-    CHRMX_SCRT="$CHRMX_BASE/backup-chromixium_sync"
     CHRMX_SYNC="$CHRMX_BASE/chromixium_profiles"
         CHRMX_REPO="$CHRMX_SYNC/$REPO_PROFILE"
             CHRMX_HFILES="$CHRMX_REPO/home_googlefiles"

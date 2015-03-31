@@ -9,6 +9,11 @@ echo "# Running: remap-chrome_apps.sh"
 # abort on error 
 set -e
 
+# initiate directories
+$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_BASE" "$GOOGLE_DATA/$CHRMX_BASE" "$SYNC_USER" -e
+$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_SYNC" "$GOOGLE_DATA/$CHRMX_SYNC" "$SYNC_USER" -e
+$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_REPO" "$GOOGLE_DATA/$CHRMX_REPO" "$SYNC_USER" -e
+
 #============= clear /usr apps start ================================
 # backup then clear chrome .desktop files in /usr directories
 # prevents duplicate/unassigned icons from showing up in the dock

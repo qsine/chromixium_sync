@@ -1,7 +1,7 @@
 #!/bin/bash
 echo ""
 echo "Running: link-usr-dir.sh"
-# by Kevin Saruwatari, 27-Mar-2015
+# by Kevin Saruwatari, 01-Apr-2015
 # free to use with no warranty
 # for use with Qsine installer pulling files
 

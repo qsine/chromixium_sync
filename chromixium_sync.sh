@@ -1,7 +1,7 @@
 #!/bin/bash
 echo ""
 echo "Running: chromixium_sync.sh"
-# by Kevin Saruwatari, 29-Mar-2015
+# by Kevin Saruwatari, 01-Apr-2015
 # free to use with no warranty
 # sync chromixium to Google Drive
 

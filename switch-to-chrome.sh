@@ -1,7 +1,7 @@
 #!/bin/bash
 echo ""
 echo "Running: switch-to-chrome.sh"
-# by Kevin Saruwatari, 27-Mar-2015
+# by Kevin Saruwatari, 01-Apr-2015
 # free to use with no warranty
 # removes chromium and pepperflash
 # installs chrome stable, .deb is in /tmp and will be deteled on restart

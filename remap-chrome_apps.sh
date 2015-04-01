@@ -1,7 +1,7 @@
 #!/bin/bash
 echo " "
 echo " Running: remap-chrome_apps.sh"
-# by Kevin Saruwatari, 29-Mar-2015
+# by Kevin Saruwatari, 01-Apr-2015
 # free to use with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent

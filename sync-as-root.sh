@@ -6,7 +6,7 @@ echo "Running: sync-as-root.sh"
 # for use with Qsine installer pushing files
 
 # abort on error 
-set -e
+set +e
 
 # check argument 1
 if [ ! "$1" ]; then
@@ -55,9 +55,34 @@ if [ ! -h "${SOURCE}" ]; then
   # not a link, check if source is a directory
   if [ -d "${SOURCE}" ]; then
     echo "${SOURCE} exists, syncing data to ${TARGET}"
-    rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+    read -p "USER_SET:$USER_SET TARGET:$TARGET"
+    $CHROMIXIUM_SCRIPTS/custom-dir.sh "TARGET" "${TARGET}" "$SYNC_USER" -e
+    if rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
                "${SOURCE}/" "${TARGET}/"
-    chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
+    then
+      if [ $DIAG_MSG == 1 ]; then
+        echo "rsync dir: OK"
+      fi
+    else
+      if [ $DIAG_MSG == 1 ]; then
+        read -p "rsync dir: FAILED"
+      fi
+    fi
+      while [ $(pgrep -c rsync) ]; do
+        read -p "rsync running"
+      done
+
+    if chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
+    then
+      if [ $DIAG_MSG == 1 ]; then
+        echo "chown dir: OK"
+      fi
+    else
+      if [ $DIAG_MSG == 1 ]; then
+        read -p "chown dir: FAILED"
+      fi
+    fi
+
     # always set the top directory to 755
     chmod 755 $(find "${TARGET}" -type d)
     # make sure a file exists
@@ -68,8 +93,17 @@ if [ ! -h "${SOURCE}" ]; then
   # check if source is a file
   elif [ -f "${SOURCE}" ]; then
     echo "${SOURCE} exists, syncing data to ${TARGET}"
-    rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+    if rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
                "${SOURCE}" "${TARGET}"
+    then
+      if [ $DIAG_MSG == 1 ]; then
+        echo "rsync file: OK"
+      fi
+    else
+      if [ $DIAG_MSG == 1 ]; then
+       read -p "rsync file: FAILED"
+      fi
+    fi
     chown "${USER_SET}":"${USER_SET}" "${TARGET}"
     # always set the top directory to 755
     chmod "${PERM_SET}" $(find "${TARGET}" -type f)
@@ -85,6 +119,6 @@ else
   echo  "${SOURCE} link is broken, exiting."
   exit 1
 fi
-
+sleep 0.25
 echo ""
 echo "Exiting: sync-as-root.sh"

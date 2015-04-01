@@ -54,21 +54,21 @@ $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_UAPPS" "$USER_APPS" "75
 
 #:::::::::::::::::: sync user files :::::::::::::::::::::
 # 01 /home/user/.face: user icon on dock
-$CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_REPO/.face" "$DEST_HOME/.face" "664" "$SYNC_USER"
+. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_REPO/.face" "$DEST_HOME/.face" "664" "$SYNC_USER"
 
 #:::::::::::::::::: sync root files :::::::::::::::::::::
 # 01 /home/user/.face: greeter user icon
-$CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_REPO/.face" "$GREETER_ICON/$SYNC_USER" "644" "root"
+. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_REPO/.face" "$GREETER_ICON/$SYNC_USER" "644" "root"
 
 #:::::::::::::::::: sync root directories :::::::::::::::::::::
 # 01 /etc/lightdm: greeter login
-$CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_LOGIN" "$LOGIN_PREF" "644" "root"
+. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_LOGIN" "$LOGIN_PREF" "644" "root"
 
 # 02 /usr/share/pixmaps/chromixium: icons for home folder shortcuts
-$CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_ICONS" "$APP_ICONS" "644" "root"
+. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_ICONS" "$APP_ICONS" "644" "root"
 
 # 03 /usr/share/wallpapers: wallpaper selection
-$CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_WALLS" "$WALLS_USR" "644" "root"
+. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_WALLS" "$WALLS_USR" "644" "root"
 
 
 # must change back to scripts directory

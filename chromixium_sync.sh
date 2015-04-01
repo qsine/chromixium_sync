@@ -10,10 +10,14 @@ set -e
 echo "GOPATH:$GOPATH"
 # set this variable to control copy scripts or Git them
 GET_SCRIPTS="git" # "git" or "copy"
-CS_STATE=0 # installation in unknown status
 DEF_NAME=$SUDO_USER
 REBOOT_FLAG=0
 
+DIAG_MSG=1
+CS_STATE=0 # installation in unknown status
+if [ $DIAG_MSG == 1 ]; then
+ echo "CS_STATE:$CS_STATE"
+fi
 #---------------------------------------------------
 
 # check argument 1
@@ -41,6 +45,9 @@ else
 fi
 
 CS_STATE=1 # calling command in right format
+if [ $DIAG_MSG == 1 ]; then
+ echo "CS_STATE:$CS_STATE"
+fi
 #---------------------------------------------------
 
 case "$1" in
@@ -80,6 +87,9 @@ else
 fi
 
 CS_STATE=2 # calling command valid argument 1
+if [ $DIAG_MSG == 1 ]; then
+ echo "CS_STATE:$CS_STATE"
+fi
 #---------------------------------------------------
 
 # check argument 2
@@ -118,6 +128,9 @@ if [ $CONFIG_CODE = "gui" ]; then
 fi
 
 CS_STATE=3 # user and repo names input
+if [ $DIAG_MSG == 1 ]; then
+ echo "CS_STATE:$CS_STATE"
+fi
 #---------------------------------------------------
 
 # parse names from dialog
@@ -183,6 +196,9 @@ case $? in
 esac
 
 CS_STATE=4 # user and repo names validated
+if [ $DIAG_MSG == 1 ]; then
+ echo "CS_STATE:$CS_STATE"
+fi
 #---------------------------------------------------
 
 # setup customization paths
@@ -259,6 +275,9 @@ export GOPATH="$ODEKE_DRIVE"
 export PATH="$PATH:$GOPATH/bin"
 
 CS_STATE=5 # user and repo paths defined
+if [ $DIAG_MSG == 1 ]; then
+ echo "CS_STATE:$CS_STATE"
+fi
 #---------------------------------------------------
 
 # test if base directories exist
@@ -266,6 +285,9 @@ if [ -d "$SYNC_BASE" \
   -a -d "$UDATA_BASE" \
    ]; then
   CS_STATE=6 # base directories exist
+  if [ $DIAG_MSG == 1 ]; then
+   echo "CS_STATE:$CS_STATE"
+  fi
   #---------------------------------------------------
 else
   echo " Missing base directories, installation required."
@@ -276,6 +298,9 @@ if [ -d "$CHROMIXIUM_SCRIPTS" ]; then
   if [ "$(ls -A $CHROMIXIUM_SCRIPTS)" ]; then
     if [ $CS_STATE -ge 6 ]; then
       CS_STATE=7 # Chromixium scripts installed
+      if [ $DIAG_MSG == 1 ]; then
+       echo "CS_STATE:$CS_STATE"
+      fi
     fi
     #---------------------------------------------------
   else
@@ -290,6 +315,9 @@ if [ -d "$ODEKE_DRIVE" ]; then
   if [ "$(ls -A $ODEKE_DRIVE)" ]; then
     if [ $CS_STATE -ge 7 ]; then
       CS_STATE=8 # ODEKE drive installed
+      if [ $DIAG_MSG == 1 ]; then
+       echo "CS_STATE:$CS_STATE"
+      fi
     fi
     #---------------------------------------------------
   else
@@ -304,6 +332,9 @@ if [ -d "$GOOGLE_DATA" ]; then
   if [ "$(ls -A $GOOGLE_DATA)" ]; then
     if [ $CS_STATE -ge 8 ]; then
       CS_STATE=9 # Google Data installed
+      if [ $DIAG_MSG == 1 ]; then
+       echo "CS_STATE:$CS_STATE"
+      fi
     fi
     #---------------------------------------------------
   else
@@ -315,6 +346,9 @@ fi
 
 # check for installation required 
 if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
+  if [ $DIAG_MSG == 1 ]; then
+   echo "CS_STATE:$CS_STATE"
+  fi
   # if installation is specifically called then just run it
   if [ "$CONFIG_CODE" != 'install' ]; then 
     # confirm with user to install
@@ -451,6 +485,9 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
 fi # end check for installation
 
 CS_STATE=10 # valid base installation confirmed
+if [ $DIAG_MSG == 1 ]; then
+ echo "CS_STATE:$CS_STATE"
+fi
 #---------------------------------------------------
 
 if [ "${RUN_MODE}" = "gui" ]; then
@@ -465,15 +502,16 @@ if [ "${RUN_MODE}" = "gui" ]; then
                   );
 fi
 
-
 #============= push start ================================
 if [ "$CONFIG_CODE" = 'push' -o "$CONFIG_CODE" = 'push_pull' ]; then
-
+  if [ $DIAG_MSG == 1 ]; then
+   echo "CONFIG_CODE:$CONFIG_CODE RUNMODE:$RUN_MODE"
+  fi
   # push data to Google Drive
   # use "." so subshell inherits environment variables
   if [ "${RUN_MODE}" = "gui" ]; then
     (
-    . $CHROMIXIUM_SCRIPTS/push-to-drive.sh -e 
+    . $CHROMIXIUM_SCRIPTS/push-to-drive.sh
     ) | zenity --progress \
         --title="Push to Google Drive" \
         --text="Prep for push..." \
@@ -483,14 +521,16 @@ if [ "$CONFIG_CODE" = 'push' -o "$CONFIG_CODE" = 'push_pull' ]; then
         zenity --error --text="Push cancelled."
       fi
   else #cmd mode
-    . $CHROMIXIUM_SCRIPTS/push-to-drive.sh -e
+    . $CHROMIXIUM_SCRIPTS/push-to-drive.sh
   fi
 fi
 #============= push end ================================
 
 #============= install/update start ================================
 if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
-
+  if [ $DIAG_MSG == 1 ]; then
+   echo "CONFIG_CODE:$CONFIG_CODE RUNMODE:$RUN_MODE"
+  fi
   # update/upgrade is done on install
   if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
     if [ "${RUN_MODE}" = "gui" ]; then
@@ -631,7 +671,9 @@ fi
 
 #============= pull start ================================
 if [ "$CONFIG_CODE" = 'pull' -o "$CONFIG_CODE" = 'push_pull' ]; then
-
+  if [ $DIAG_MSG == 1 ]; then
+   echo "CONFIG_CODE:$CONFIG_CODE RUNMODE:$RUN_MODE"
+  fi
   # pull new data from Google Drive
   #   Note: this will clear Chrome .desktop apps from /usr directories
   #         to prevent duplicate/unassigned icons from showing up in the dock

@@ -59,23 +59,27 @@ PKG_NAME=google-chrome-stable
 # no error abort
 set +e
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
-echo "# Checking for $PKG_NAME: $PKG_OK"
+echo "26"; echo "# Checking for $PKG_NAME: $PKG_OK"
 if [ "" == "$PKG_OK" ]; then
-  echo "# Installing $PKG_NAME."
+  echo "27"; echo "# $PKG_NAME not found."
+  sleep 1
   cd /tmp
   echo "changed to:$(dirname "$(readlink -f "$0")")"
   if [ -d /tmp/google-chrome-stable_current_i386.deb ]; then
     rm /tmp/google-chrome-stable_current_i386.deb
   fi
+  echo "30"; echo "# Downloading $PKG_NAME."
   if [ "$RUN_MODE" = "gui" ]; then
     wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb > /dev/null
   else
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
   fi
+  echo "70"; echo "# Installing $PKG_NAME."
   dpkg -i google-chrome-stable_current_i386.deb
   ln -s -f /usr/bin/google-chrome /usr/bin/chromium-browser
+  echo "90"; echo "# Installing $PKG_NAME."
   echo "REBOOT REQUIRED" > /tmp/REBOOT_FLAG
-  sleep 5
+  sleep 1
   rm "$USER_APPS"/chrom*
 fi
 # abort on error 
@@ -85,4 +89,5 @@ set -e
 # it works if chromium is left installed
 
 echo ""
-echo "Exiting: switch-to-chrome.sh"
+echo "99"; echo "# Exiting: switch-to-chrome.sh"
+sleep 1

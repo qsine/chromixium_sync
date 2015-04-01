@@ -54,6 +54,8 @@ if [ ! -h "${ORIG_PATH}" ]; then
   if [ -d "${ORIG_PATH}" ]; then
     mv "${ORIG_PATH}" "${ORIG_PATH}.old"
     echo "  - ORIG_PATH: backed up to ${ORIG_PATH}.old"
+    # call for reboot
+    echo "REBOOT REQUIRED" > /tmp/REBOOT_FLAG
   fi
 
   # create link

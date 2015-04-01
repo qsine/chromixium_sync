@@ -7,7 +7,7 @@ echo "Running: test.sh"
 # abort on error 
 set -e
 
-kill -9 `ps aux | grep chrom | grep -v grep | awk '{print $2}'`
+compton 
 
 echo ""
 echo "Exiting: test.sh"

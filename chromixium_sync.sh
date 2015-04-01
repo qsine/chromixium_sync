@@ -722,7 +722,7 @@ if [ -f "/tmp/REBOOT_FLAG" ]; then
       set +e
       zenity --question --text="Reboot required, restart now?"
       if [ "$?" = 0 ]; then
-        openbox --restart
+        reboot
       fi
       # abort on error 
       set -e
@@ -731,7 +731,7 @@ if [ -f "/tmp/REBOOT_FLAG" ]; then
       while true; do
         read -p "Reboot required, restart now? (y/n):" yn
         case $yn in
-          [Yy]* ) openbox --restart
+          [Yy]* ) reboot
                   break
                   ;;
           [Nn]* ) break
@@ -750,7 +750,7 @@ if [ -f "/tmp/LOGOFF_FLAG" ]; then
       set +e
       zenity --question --text="Log out/in required, log off now?"
       if [ "$?" = 0 ]; then
-        openbox --restart
+        openbox --exit
       fi
       # abort on error 
       set -e
@@ -759,7 +759,7 @@ if [ -f "/tmp/LOGOFF_FLAG" ]; then
       while true; do
         read -p "Log out/in required, log off now? (y/n):" yn
         case $yn in
-          [Yy]* ) openbox --restart
+          [Yy]* ) openbox --exit
                   break
                   ;;
           [Nn]* ) break

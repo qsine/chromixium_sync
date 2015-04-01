@@ -50,7 +50,10 @@ Where:
 
 The file structure gets modified by these scripts:
  - the paths are all in chromixium_sync.sh
- - look at pull-from-drive.sh and push-to-drive.sh to see the changes
+ - look at remap-chrome_apps.sh, pull-from-drive.sh and push-to-drive.sh to see the changes
+
+#----------------------------------------------
+29-Mar-2015: pre-Alpha test only if you are brave!  Make an image of your system with CloneZilla first.
 
 #----------------------------------------------
 27-Mar-2015: pre-Alpha test only if you are brave!

@@ -69,6 +69,9 @@ echo "91"; echo "# /usr/share/pixmaps/chromixium: icons for home folder shortcut
 echo "92"; echo "# /usr/share/wallpapers: wallpaper selection"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_WALLS" "$WALLS_USR" "644" "root"
 
+# call for reboot
+echo "REBOOT REQUIRED" > /tmp/REBOOT_FLAG
+
 # must change back to scripts directory
 cd "$CHROMIXIUM_SCRIPTS"
 echo "# Changed to:$(dirname "$(readlink -f "$0")")"

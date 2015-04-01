@@ -524,7 +524,7 @@ if [ "$CONFIG_CODE" = 'push' -o "$CONFIG_CODE" = 'push_pull' ]; then
     (
     . $CHROMIXIUM_SCRIPTS/push-to-drive.sh
     ) | zenity --progress \
-        --title="Push to Google Drive" \
+        --title="Local Machine -> Google Drive" \
         --text="Prep for push..." \
         --percentage=0 \
         --auto-close
@@ -695,7 +695,7 @@ if [ "$CONFIG_CODE" = 'pull' -o "$CONFIG_CODE" = 'push_pull' ]; then
     (
     . $CHROMIXIUM_SCRIPTS/pull-from-drive.sh
     ) | zenity --progress \
-        --title="Pull from Google Drive" \
+        --title="Google Drive -> Local Machine" \
         --text="Pulling..." \
         --percentage=0 \
         --auto-close

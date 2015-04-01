@@ -14,9 +14,21 @@ cd "$GOOGLE_DATA"
 echo "# Changed to:$(dirname "$(readlink -f "$0")")"
 
 #============= pull start ================================
-echo "01"; echo "# Pull Google Drive to $GOOGLE_DATA..."
+echo "01"; echo "# Preparing to pull"
 # pull repo 
-drive pull -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 
+(
+  drive pull -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 
+) | zenity --progress \
+    --title="Pull from Google Drive" \
+    --text="Pulling Google Drive to $GOOGLE_DATA..." \
+    --percentage=0 \
+    --auto-close
+  if [ "$?" = -1 ]; then
+    zenity --error --text="Pull cancelled."
+  fi
+echo "60"; echo "# Buffer pulled from Google Drive"
+sleep 1
+
 # set directories to 755
 chown -R "$SYNC_USER":"$SYNC_USER" "$CHRMX_REPO"
 #============= pull end ================================

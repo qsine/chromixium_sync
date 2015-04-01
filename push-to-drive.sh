@@ -70,12 +70,21 @@ echo "32"; echo "# /usr/share/wallpapers: wallpaper selection"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$WALLS_USR" "$GOOGLE_DATA/$CHRMX_WALLS" "664" "$SYNC_USER"
 
 #===================== push start ================================
-echo "40"; echo "# Pushing to Google Drive..."
+echo "40"; echo "# Preparing to push..."
 
-# push current repo 
-drive push -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 
+(
+  drive push -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 
+) | zenity --progress \
+    --title="Push to Google Drive" \
+    --text="Pushing $GOOGLE_DATA to Google Drive..." \
+    --percentage=0 \
+    --auto-close
+  if [ "$?" = -1 ]; then
+    zenity --error --text="Pull cancelled."
+  fi
+
 echo "99"; echo "# Buffer pushed to Google Drive"
-
+sleep 1
 #============= push end ================================
 
 # must change back to scripts directory

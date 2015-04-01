@@ -547,9 +547,9 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
     if [ "${RUN_MODE}" = "gui" ]; then
       (
       echo "5"; echo "# Update Chromixium repos"
-      apt-get update
+      apt-get update > /dev/null
       echo "25"; echo "# Update Chromixium"
-      apt-get -y dist-upgrade
+      apt-get -y dist-upgrade > /dev/null
       echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
       ) | zenity --progress \
           --title="Updating Chromixium..." \
@@ -607,7 +607,7 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
       zenity --question --text="Switch from Chromium to Chrome?"
       if [ "$?" = 0 ]; then
         (
-        . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh -e
+        . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh
         ) | zenity --progress \
           --title="Switch to Chrome..." \
           --text="Install Chrome..." \
@@ -626,7 +626,7 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
       while true; do
         read -p "Switch from Chromium to Chrome? (y/n):" yn
         case $yn in
-          [Yy]* ) . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh -e
+          [Yy]* ) . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh
                   break
                   ;;
           [Nn]* ) break
@@ -642,7 +642,7 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
   if [ "${RUN_MODE}" = "gui" ]; then
     (
     echo "  ..remap chrome apps"
-    . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh -e
+    . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
     ) | zenity --progress \
       --title="Remap Chrome Apps..." \
       --text="Checking apps..." \
@@ -653,14 +653,14 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
     fi
   else # cmd mode
     echo "  ..remap chrome apps"
-    . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh -e
+    . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
   fi # end remap chrome apps
 
   # clean up
   if [ "${RUN_MODE}" = "gui" ]; then
     (
     echo "#  ..clearing any unused packages"
-    apt-get -y autoremove
+    apt-get -y autoremove > /dev/null
     echo "done."
     ) | zenity --progress \
       --title="Clean up Chromixium..." \
@@ -693,7 +693,7 @@ if [ "$CONFIG_CODE" = 'pull' -o "$CONFIG_CODE" = 'push_pull' ]; then
   # use "." so subshell inherits environment variables
   if [ "${RUN_MODE}" = "gui" ]; then
     (
-    . $CHROMIXIUM_SCRIPTS/pull-from-drive.sh -e
+    . $CHROMIXIUM_SCRIPTS/pull-from-drive.sh
     ) | zenity --progress \
         --title="Pull from Google Drive" \
         --text="Pulling..." \
@@ -703,7 +703,7 @@ if [ "$CONFIG_CODE" = 'pull' -o "$CONFIG_CODE" = 'push_pull' ]; then
         zenity --error --text="Pull cancelled."
       fi
   else #cmd mode
-    . $CHROMIXIUM_SCRIPTS/pull-from-drive.sh -e
+    . $CHROMIXIUM_SCRIPTS/pull-from-drive.sh
   fi
 
 fi

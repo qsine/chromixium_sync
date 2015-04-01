@@ -10,7 +10,7 @@ echo "# Running: push-to-drive.sh"
 set -e
 
 # fix chrome shortcuts from creating duplicate/default icons on plank
-. $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh -e
+. $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
 
 # must change to GDATA directory to push/pull
 cd "$GOOGLE_DATA"
@@ -41,7 +41,7 @@ echo "07"; echo "# plank: dock settings"
 echo "08"; echo "# screenlayout: multi-monitor settings"
 #   don't exist in stock install so create it to keep error checking in sync-as-root valid
 if [ ! -d "$USER_SCRNL" ]; then
-  $CHROMIXIUM_SCRIPTS/custom-dir.sh "USER_SCRNL" "$USER_SCRNL" "$SYNC_USER" -e
+  $CHROMIXIUM_SCRIPTS/custom-dir.sh "USER_SCRNL" "$USER_SCRNL" "$SYNC_USER"
   echo "# a file is required for chromixium_sync" >> "$USER_SCRNL"/chrx-readme
   chown  "$SYNC_USER:$SYNC_USER" "$USER_SCRNL"/chrx-readme
 fi

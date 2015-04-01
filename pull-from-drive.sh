@@ -22,7 +22,7 @@ chown -R "$SYNC_USER":"$SYNC_USER" "$CHRMX_REPO"
 #============= pull end ================================
 
 # fix chrome shortcuts from creating duplicate/default icons on plank
-. $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh -e
+. $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
 
 #:::::::::::::::::: link user directories :::::::::::::::::::::
 echo "61"; echo "# gtk3: misc file/desktop settings"

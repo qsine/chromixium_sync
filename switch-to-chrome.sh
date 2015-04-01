@@ -34,17 +34,26 @@ for i in {1..2}; do
   if [ ! "" == "$PKG_OK" ]; then
     REMOVED_PKGS=$REMOVED_PKGS+1
     echo "$PKG_NAME installed. Removing $PKG_NAME."
-    apt-get -y remove $PKG_NAME
+    if [ "$RUN_MODE" = "gui" ]; then
+      apt-get -y remove $PKG_NAME > /dev/null
+    else
+      apt-get -y remove $PKG_NAME
+    fi
   fi
 
 done
 
 if [ ! "0" == "$REMOVED_PKGs" ]; then
   echo "20"; echo "# Cleaning up packages"
-  apt-get -y autoremove
+  if [ ! "" == "$PKG_OK" ]; then
+    apt-get -y autoremove > /dev/null
+  else
+    apt-get -y autoremove
+  fi
 fi
 
-echo "25"; echo "# Install Chrome"
+echo "25"; echo "# Check if Chrome is installed"
+sleep 1
 
 PKG_NAME=google-chrome-stable
 # no error abort
@@ -52,10 +61,17 @@ set +e
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
 echo "# Checking for $PKG_NAME: $PKG_OK"
 if [ "" == "$PKG_OK" ]; then
-  echo "# $PKG_NAME not installed. Adding $PKG_NAME."
+  echo "# Installing $PKG_NAME."
   cd /tmp
   echo "changed to:$(dirname "$(readlink -f "$0")")"
-  wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
+  if [ -d /tmp/google-chrome-stable_current_i386.deb ]; then
+    rm /tmp/google-chrome-stable_current_i386.deb
+  fi
+  if [ "$RUN_MODE" = "gui" ]; then
+    wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb > /dev/null
+  else
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
+  fi
   dpkg -i google-chrome-stable_current_i386.deb
   ln -s -f /usr/bin/google-chrome /usr/bin/chromium-browser
   echo "REBOOT REQUIRED" > /tmp/REBOOT_FLAG

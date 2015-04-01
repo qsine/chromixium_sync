@@ -1,4 +1,8 @@
+#!/usr/bin/env xdg-open
+
 [Desktop Entry]
+# this file must keep the real name chromium-browser.desktop
+
 Version=1.0
 Name=Google Chrome
 # Only KDE 4 seems to use GenericName, so we reuse the KDE strings.

@@ -11,8 +11,16 @@ echo "GOPATH:$GOPATH"
 # set this variable to control copy scripts or Git them
 GET_SCRIPTS="git" # "git" or "copy"
 DEF_NAME=$SUDO_USER
-REBOOT_FLAG=0
 
+# clear reboot and log off flags
+if [ -f "/tmp/REBOOT_FLAG" ]; then
+  rm /tmp/REBOOT_FLAG
+fi
+if [ -f "/tmp/LOGOFF_FLAG" ]; then
+  rm /tmp/LOGOFF_FLAG
+fi
+
+# turn diagnostic messages on/off
 DIAG_MSG=1
 CS_STATE=0 # installation in unknown status
 if [ $DIAG_MSG == 1 ]; then
@@ -420,8 +428,9 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
       echo "CHROMIXIUM_SCRIPTS:$CHROMIXIUM_SCRIPTS installed"
     else
       if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
-        echo "update Ubuntu repos and upgrade"
+        echo "Update Chromixium repos"
         apt-get update
+        echo "Upgrade Chromixium repos"
         apt-get -y dist-upgrade
         echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
       fi
@@ -462,9 +471,10 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
   # install GO tools to push/pull data to/from Google Drive
   if [ "$CS_STATE" -lt 8 ]; then
     if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
-      echo "update Ubuntu repos and upgrade"
-      apt-get update
-      apt-get -y dist-upgrade
+        echo "Update Chromixium repos"
+        apt-get update
+        echo "Upgrade Chromixium repos"
+        apt-get -y dist-upgrade
       echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
     fi
     . $CHROMIXIUM_SCRIPTS/get-odeke_drive.sh "ODEKE_DRIVE" "$ODEKE_DRIVE" "$DEST_HOME"
@@ -473,9 +483,10 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
   # google data is the buffer to push/pull files and directories to/from google drive
   if [ "$CS_STATE" -lt 9 ]; then
     if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
-      echo "update Ubuntu repos and upgrade"
-      apt-get update
-      apt-get -y dist-upgrade
+        echo "Update Chromixium repos"
+        apt-get update
+        echo "Upgrade Chromixium repos"
+        apt-get -y dist-upgrade
       echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
     fi
     . $CHROMIXIUM_SCRIPTS/create-google_data.sh "GOOGLE_DATA" "$GOOGLE_DATA" "$ODEKE_DRIVE"
@@ -535,8 +546,9 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
   if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
     if [ "${RUN_MODE}" = "gui" ]; then
       (
-      echo "update Ubuntu repos and upgrade"
+      echo "5"; echo "# Update Chromixium repos"
       apt-get update
+      echo "25"; echo "# Update Chromixium"
       apt-get -y dist-upgrade
       echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
       ) | zenity --progress \
@@ -548,8 +560,9 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
           zenity --error --text="Update cancelled."
         fi
     else #cmd mode
-      echo "update Ubuntu repos and upgrade"
+      echo "Update Chromixium repos"
       apt-get update
+      echo "Upgrade Chromixium"
       apt-get -y dist-upgrade
       echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
     fi
@@ -558,9 +571,9 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
   if [ "$GET_SCRIPTS" = "git" ]; then
     if [ "${RUN_MODE}" = "gui" ]; then
       (
-      echo "  -CHROMIXIUM_SCRIPTS:${CHROMIXIUM_SCRIPTS} already installed, updating from Git"
+      echo "#  -CHROMIXIUM_SCRIPTS:${CHROMIXIUM_SCRIPTS} already installed, updating from Git"
       cd "${CHROMIXIUM_SCRIPTS}"
-      echo " Changed to:$(dirname "$(readlink -f "$0")")"
+      echo "# Changed to:$(dirname "$(readlink -f "$0")")"
       git pull
       ) | zenity --progress \
           --title="Sync Scripts..." \
@@ -646,7 +659,7 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
   # clean up
   if [ "${RUN_MODE}" = "gui" ]; then
     (
-    echo "  ..clearing any unused packages"
+    echo "#  ..clearing any unused packages"
     apt-get -y autoremove
     echo "done."
     ) | zenity --progress \
@@ -702,7 +715,8 @@ if [ "${RUN_MODE}" = "gui" ]; then
   zenity --info --text="Chromixium Sync complete."
 fi
 
-if [ $REBOOT_FLAG == 1 ]; then
+# reboot if required
+if [ -f "/tmp/REBOOT_FLAG" ]; then
     if [ "$RUN_MODE" = "gui" ]; then
       # no error abort 
       set +e
@@ -728,3 +742,32 @@ if [ $REBOOT_FLAG == 1 ]; then
       done
     fi # end gui/cmd line confirm
 fi # end restart
+
+# log off if required
+if [ -f "/tmp/LOGOFF_FLAG" ]; then
+    if [ "$RUN_MODE" = "gui" ]; then
+      # no error abort 
+      set +e
+      zenity --question --text="Log out/in required, log off now?"
+      if [ "$?" = 0 ]; then
+        openbox --exit
+      fi
+      # abort on error 
+      set -e
+    else # cmd mode
+      echo ""
+      while true; do
+        read -p "Log out/in required, log off now? (y/n):" yn
+        case $yn in
+          [Yy]* ) openbox --exit
+                  break
+                  ;;
+          [Nn]* ) break
+                  ;;
+           * ) echo "Please answer y or n"
+               ;;
+        esac
+      done
+    fi # end gui/cmd line confirm
+fi
+

@@ -70,7 +70,7 @@ echo "32"; echo "# /usr/share/wallpapers: wallpaper selection"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$WALLS_USR" "$GOOGLE_DATA/$CHRMX_WALLS" "664" "$SYNC_USER"
 
 #===================== push start ================================
-echo "40"; echo "# Push buffer to Google Drive..."
+echo "40"; echo "# Pushing to Google Drive..."
 
 # push current repo 
 drive push -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 

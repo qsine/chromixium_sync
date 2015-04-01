@@ -1,12 +1,12 @@
 #!/bin/bash
 echo ""
 echo "Running: sync-as-root.sh"
-# by Kevin Saruwatari, 27-Mar-2015
+# by Kevin Saruwatari, 31-Mar-2015
 # free to use with no warranty
-# for use with Qsine installer pushing files
+# for use with Qsine installer push/pull files
 
 # abort on error 
-set +e
+set -e
 
 # check argument 1
 if [ ! "$1" ]; then
@@ -55,34 +55,13 @@ if [ ! -h "${SOURCE}" ]; then
   # not a link, check if source is a directory
   if [ -d "${SOURCE}" ]; then
     echo "${SOURCE} exists, syncing data to ${TARGET}"
-    read -p "USER_SET:$USER_SET TARGET:$TARGET"
-    $CHROMIXIUM_SCRIPTS/custom-dir.sh "TARGET" "${TARGET}" "$SYNC_USER" -e
-    if rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
-               "${SOURCE}/" "${TARGET}/"
-    then
-      if [ $DIAG_MSG == 1 ]; then
-        echo "rsync dir: OK"
-      fi
+    if [ "${RUN_MODE}" = "gui" ]; then
+      rsync -aP --links --exclude-from "$EXCL_DIR/sync-excludes" \
+        "${SOURCE}"/ "${TARGET}"/
     else
-      if [ $DIAG_MSG == 1 ]; then
-        read -p "rsync dir: FAILED"
-      fi
+      rsync -a --links --exclude-from "$EXCL_DIR/sync-excludes" \
+        "${SOURCE}"/ "${TARGET}"/
     fi
-      while [ $(pgrep -c rsync) ]; do
-        read -p "rsync running"
-      done
-
-    if chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
-    then
-      if [ $DIAG_MSG == 1 ]; then
-        echo "chown dir: OK"
-      fi
-    else
-      if [ $DIAG_MSG == 1 ]; then
-        read -p "chown dir: FAILED"
-      fi
-    fi
-
     # always set the top directory to 755
     chmod 755 $(find "${TARGET}" -type d)
     # make sure a file exists
@@ -90,19 +69,16 @@ if [ ! -h "${SOURCE}" ]; then
       chmod "${PERM_SET}" $(find "${TARGET}" -type f)
     fi
     echo "  - dir sync complete"
+    chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
   # check if source is a file
   elif [ -f "${SOURCE}" ]; then
     echo "${SOURCE} exists, syncing data to ${TARGET}"
-    if rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
-               "${SOURCE}" "${TARGET}"
-    then
-      if [ $DIAG_MSG == 1 ]; then
-        echo "rsync file: OK"
-      fi
+    if [ "${RUN_MODE}" = "gui" ]; then
+      rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+        "${SOURCE}" "${TARGET}"
     else
-      if [ $DIAG_MSG == 1 ]; then
-       read -p "rsync file: FAILED"
-      fi
+      rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+        "${SOURCE}" "${TARGET}"
     fi
     chown "${USER_SET}":"${USER_SET}" "${TARGET}"
     # always set the top directory to 755
@@ -119,6 +95,7 @@ else
   echo  "${SOURCE} link is broken, exiting."
   exit 1
 fi
-sleep 0.25
+
+sleep 0.5
 echo ""
 echo "Exiting: sync-as-root.sh"

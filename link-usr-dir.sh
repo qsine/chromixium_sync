@@ -67,5 +67,6 @@ else
   echo "  - ORIG_PATH:${ORIG_PATH} link updated"
 fi
 
+sleep 0.5
 echo ""
 echo "Exiting: link-usr-dir.sh"

@@ -1,8 +1,13 @@
 #!/bin/bash
-echo " "
-echo "# Running: push-to-drive.sh"
+
+if [ $DIAG_MSG = 1 ]; then
+  echo " "
+  echo "# Running: push-to-drive.sh"
+  sleep 1
+fi
+
 # by Kevin Saruwatari, 01-Apr-2015
-# free to use with no warranty
+# free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
 
@@ -41,7 +46,7 @@ echo "07"; echo "# plank: dock settings"
 echo "08"; echo "# screenlayout: multi-monitor settings"
 #   don't exist in stock install so create it to keep error checking in sync-as-root valid
 if [ ! -d "$USER_SCRNL" ]; then
-  $CHROMIXIUM_SCRIPTS/custom-dir.sh "USER_SCRNL" "$USER_SCRNL" "$SYNC_USER"
+  . $CHROMIXIUM_SCRIPTS/custom-dir.sh "USER_SCRNL" "$USER_SCRNL" "$SYNC_USER"
   echo "# a file is required for chromixium_sync" >> "$USER_SCRNL"/chrx-readme
   chown  "$SYNC_USER:$SYNC_USER" "$USER_SCRNL"/chrx-readme
 fi
@@ -92,6 +97,8 @@ cd "$CHROMIXIUM_SCRIPTS"
 echo "# Changed to:$(dirname "$(readlink -f "$0")")"
 sleep 1
 
-echo " "
-echo "# Exiting: push-to-drive.sh"
-sleep 1
+if [ $DIAG_MSG = 1 ]; then
+  echo " "
+  echo "# Exiting: push-to-drive.sh"
+  sleep 1
+fi

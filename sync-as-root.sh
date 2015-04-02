@@ -1,8 +1,13 @@
 #!/bin/bash
-echo ""
-echo "Running: sync-as-root.sh"
+
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Running: sync-as-root.sh"
+  sleep 1
+fi
+
 # by Kevin Saruwatari, 01-Apr-2015
-# free to use with no warranty
+# free to use/distribute with no warranty
 # for use with Qsine installer push/pull files
 
 # abort on error 
@@ -97,5 +102,9 @@ else
 fi
 
 sleep 0.5
-echo ""
-echo "Exiting: sync-as-root.sh"
+
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Exiting: sync-as-root.sh"
+  sleep 1
+fi

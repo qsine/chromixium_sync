@@ -1,8 +1,13 @@
 #!/bin/bash
-echo ""
-echo "Running: switch-to-chrome.sh"
+
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Running: switch-to-chrome.sh"
+  sleep 1
+fi
+
 # by Kevin Saruwatari, 01-Apr-2015
-# free to use with no warranty
+# free to use/distribute with no warranty
 # removes chromium and pepperflash
 # installs chrome stable, .deb is in /tmp and will be deteled on restart
 # build link to start chome on chromium calls
@@ -87,7 +92,11 @@ set -e
 
 # NOTE: leave the autostart and make all chrome shortcuts call chromium browser 
 # it works if chromium is left installed
+echo "99"; 
 
-echo ""
-echo "99"; echo "# Exiting: switch-to-chrome.sh"
-sleep 1
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Exiting: switch-to-chrome.sh"
+  sleep 1
+fi
+

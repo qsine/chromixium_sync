@@ -1,8 +1,13 @@
 #!/bin/bash
-echo ""
-echo "Running: pull-from-drive.sh"
+
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Running: pull-from-drive.sh"
+  sleep 1
+fi
+
 # by Kevin Saruwatari, 01-Apr-2015
-# free to use with no warranty
+# free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
 
@@ -86,6 +91,8 @@ cd "$CHROMIXIUM_SCRIPTS"
 echo "# Changed to:$(dirname "$(readlink -f "$0")")"
 sleep 1
 
-echo ""
-echo "# Exiting: pull-from-drive.sh"
-sleep 1
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Exiting: pull-from-drive.sh"
+  sleep 1
+fi

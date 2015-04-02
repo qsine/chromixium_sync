@@ -1,8 +1,13 @@
 #!/bin/bash
-echo ""
-echo "Running: create-google_data.sh"
+
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Running: create-google_data.sh"
+  sleep 1
+fi
+
 # by Kevin Saruwatari, 27-Mar-2015
-# free to use with no warranty
+# free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
 
@@ -53,7 +58,7 @@ else
 fi
 
 # create directory if it does not exist
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "${REF_NAME}" "${GDATA_PATH}" "$SYNC_USER"
+. $CHROMIXIUM_SCRIPTS/custom-dir.sh "${REF_NAME}" "${GDATA_PATH}" "$SYNC_USER"
 
 # make sure GOPATH variables are found
 if [[ $GOPATH != ${GOPATH_DIR} ]]; then
@@ -71,5 +76,10 @@ else
   echo "    -${REF_NAME}:${GDATA_PATH} already initialized"
 fi
 
-echo ""
-echo "Exiting: create-google_data.sh"
+
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Exiting: create-google_data.sh"
+  sleep 1
+fi
+

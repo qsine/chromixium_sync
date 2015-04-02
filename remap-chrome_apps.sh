@@ -1,8 +1,13 @@
 #!/bin/bash
-echo " "
-echo " Running: remap-chrome_apps.sh"
-# by Kevin Saruwatari, 01-Apr-2015
-# free to use with no warranty
+
+if [ $DIAG_MSG = 1 ]; then
+  echo " "
+  echo "# Running: remap-chrome_apps.sh"
+  sleep 1
+fi
+
+# by Kevin Saruwatari, 02-Apr-2015
+# free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
 
@@ -10,23 +15,23 @@ echo " Running: remap-chrome_apps.sh"
 set -e
 
 # initiate directories
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_BASE" "$GOOGLE_DATA/$CHRMX_BASE" "$SYNC_USER"
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_SYNC" "$GOOGLE_DATA/$CHRMX_SYNC" "$SYNC_USER"
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_REPO" "$GOOGLE_DATA/$CHRMX_REPO" "$SYNC_USER"
+. $CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_BASE" "$GOOGLE_DATA/$CHRMX_BASE" "$SYNC_USER"
+. $CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_SYNC" "$GOOGLE_DATA/$CHRMX_SYNC" "$SYNC_USER"
+. $CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_REPO" "$GOOGLE_DATA/$CHRMX_REPO" "$SYNC_USER"
 
 #============= clear /usr apps start ================================
 # backup then clear chrome .desktop files in /usr directories
 # prevents duplicate/unassigned icons from showing up in the dock
 
 # create backup in user home so it can be found
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE" "$BACKUP_BASE" "$SYNC_USER"
+. $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE" "$BACKUP_BASE" "$SYNC_USER"
 
 # APP_SHARE="/usr/share/applications"
 if [ "$(ls -A $APP_SHARE | grep chrom)" -o "$(ls -A $APP_SHARE | grep google)" ]; then
   TIMESTAMP="$(date +%Y_%m_%d_%H_%M_%S)-usr_share_applications"
   echo "Found Chrome shortcuts in APP_SHARE:$APP_SHARE..."
   echo "  - moving to: $BACKUP_BASE/$TIMESTAMP"
-  $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE/TIMESTAMP" "$BACKUP_BASE/$TIMESTAMP" "$SYNC_USER"
+  . $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE/TIMESTAMP" "$BACKUP_BASE/$TIMESTAMP" "$SYNC_USER"
   # no error abort
   set +e
   mv "$APP_SHARE"/chrom* "$BACKUP_BASE/$TIMESTAMP"
@@ -42,7 +47,7 @@ if [ "$(ls -A $APP_LOCAL | grep chrom)" ]; then
   TIMESTAMP="$(date +%Y_%m_%d_%H_%M_%S)-usr_local_share_applications"
   echo "Found Chrome shortcuts in APP_LOCAL:$APP_LOCAL..."
   echo "  - moving to: $BACKUP_BASE/$TIMESTAMP"
-  $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE/TIMESTAMP" "$BACKUP_BASE/$TIMESTAMP" "$SYNC_USER"
+  . $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE/TIMESTAMP" "$BACKUP_BASE/$TIMESTAMP" "$SYNC_USER"
   mv "$APP_LOCAL"/chrom* "$BACKUP_BASE/$TIMESTAMP"
   chown -R $SYNC_USER:$SYNC_USER "$BACKUP_BASE/$TIMESTAMP"
 else
@@ -53,7 +58,7 @@ if [ "$(ls -A $USER_APPS | grep chrome)" ]; then
   TIMESTAMP="$(date +%Y_%m_%d_%H_%M_%S)-home_local_share_applications"
   echo "Found Chrome shortcuts in USER_APPS:$USER_APPS..."
   echo "  - moving to: $BACKUP_BASE/$TIMESTAMP"
-  $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE/TIMESTAMP" "$BACKUP_BASE/$TIMESTAMP" "$SYNC_USER"
+  . $CHROMIXIUM_SCRIPTS/custom-dir.sh "BACKUP_BASE/TIMESTAMP" "$BACKUP_BASE/$TIMESTAMP" "$SYNC_USER"
   # remove chrome created shortcuts - keep chromixium
   mv "$USER_APPS"/chrome* "$BACKUP_BASE/$TIMESTAMP"
   chown -R $SYNC_USER:$SYNC_USER "$BACKUP_BASE/$TIMESTAMP"
@@ -107,7 +112,7 @@ fi
 #============= home directories start ================================
 # create directory in Google Data that will push/pull
 #  and make a link to for user Desktop in nautilus below
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_HFILES" "$GOOGLE_DATA/$CHRMX_HFILES" "$SYNC_USER"
+. $CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_HFILES" "$GOOGLE_DATA/$CHRMX_HFILES" "$SYNC_USER"
 
 # make sure user-dir update is off so manual changes stick 
 echo "enabled=False" > ~/.config/user-dirs.conf
@@ -132,7 +137,7 @@ else
 fi
 
 # create LocalFiles in user home that does not push/pull to Google Drive
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "LOCAL_FILES" "$LOCAL_FILES" "$SYNC_USER"
+. $CHROMIXIUM_SCRIPTS/custom-dir.sh "LOCAL_FILES" "$LOCAL_FILES" "$SYNC_USER"
 
 # move home directories and reconfig user dirs
 if [ -d "$DEST_HOME/Desktop" ]; then
@@ -183,5 +188,8 @@ fi
 
 #============= home directories end ================================
 
-echo " "
-echo " Exiting: remap-chrome_apps.sh"
+if [ $DIAG_MSG = 1 ]; then
+  echo " "
+  echo "# Exiting: remap-chrome_apps.sh"
+  sleep 1
+fi

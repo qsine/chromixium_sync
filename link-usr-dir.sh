@@ -1,8 +1,13 @@
 #!/bin/bash
-echo ""
-echo "Running: link-usr-dir.sh"
+
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Running: link-usr-dir.sh"
+  sleep 1
+fi
+
 # by Kevin Saruwatari, 01-Apr-2015
-# free to use with no warranty
+# free to use/distribute with no warranty
 # for use with Qsine installer pulling files
 
 # abort on error 
@@ -69,6 +74,8 @@ else
   echo "  - ORIG_PATH:${ORIG_PATH} link updated"
 fi
 
-sleep 0.5
-echo ""
-echo "Exiting: link-usr-dir.sh"
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Exiting: link-usr-dir.sh"
+  sleep 1
+fi

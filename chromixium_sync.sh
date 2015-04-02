@@ -1,8 +1,10 @@
 #!/bin/bash
+
 echo ""
 echo "Running: chromixium_sync.sh"
+
 # by Kevin Saruwatari, 01-Apr-2015
-# free to use with no warranty
+# free to use/distribute with no warranty
 # sync chromixium to Google Drive
 
 # abort on error 
@@ -427,13 +429,9 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
       chmod "755" "$CHROMIXIUM_SCRIPTS"/*.sh
       echo "CHROMIXIUM_SCRIPTS:$CHROMIXIUM_SCRIPTS installed"
     else
-      if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
-        echo "Update Chromixium repos"
-        apt-get update
-        echo "Upgrade Chromixium repos"
-        apt-get -y dist-upgrade
-        echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
-      fi
+      # update/upgrade apt
+      . $CHROMIXIUM_SCRIPTS/upgrade-apt.sh
+
       # install Git if missing
       echo "Checking for Git"
       # no error abort
@@ -470,25 +468,13 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
 
   # install GO tools to push/pull data to/from Google Drive
   if [ "$CS_STATE" -lt 8 ]; then
-    if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
-        echo "Update Chromixium repos"
-        apt-get update
-        echo "Upgrade Chromixium repos"
-        apt-get -y dist-upgrade
-      echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
-    fi
+    # install
     . $CHROMIXIUM_SCRIPTS/get-odeke_drive.sh "ODEKE_DRIVE" "$ODEKE_DRIVE" "$DEST_HOME"
   fi # end get ODEKE utilities
 
   # google data is the buffer to push/pull files and directories to/from google drive
   if [ "$CS_STATE" -lt 9 ]; then
-    if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
-        echo "Update Chromixium repos"
-        apt-get update
-        echo "Upgrade Chromixium repos"
-        apt-get -y dist-upgrade
-      echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
-    fi
+    # create
     . $CHROMIXIUM_SCRIPTS/create-google_data.sh "GOOGLE_DATA" "$GOOGLE_DATA" "$ODEKE_DRIVE"
   fi # end make Google Data
 
@@ -542,169 +528,22 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
   if [ $DIAG_MSG == 1 ]; then
    echo "CONFIG_CODE:$CONFIG_CODE RUNMODE:$RUN_MODE"
   fi
-  # update/upgrade is done on install
-  if [ ! -f "/tmp/APTUPDATE_RAN" ]; then
-    if [ "${RUN_MODE}" = "gui" ]; then
-      (
-      echo "5"; echo "# Update Chromixium repos"
-      apt-get update > /dev/null
-      echo "25"; echo "# Update Chromixium"
-      apt-get -y dist-upgrade > /dev/null
-      echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
-      ) | zenity --progress \
-          --title="Updating Chromixium..." \
-          --text="Using apt-get..." \
-          --percentage=0 \
-          --auto-close
-        if [ "$?" = -1 ]; then
-          zenity --error --text="Update cancelled."
-        fi
-    else #cmd mode
-      echo "Update Chromixium repos"
-      apt-get update
-      echo "Upgrade Chromixium"
-      apt-get -y dist-upgrade
-      echo "ran-this-power-cycle=true" > /tmp/APTUPDATE_RAN
-    fi
-  fi
-  # update scripts if using Git
-  if [ "$GET_SCRIPTS" = "git" ]; then
-    if [ "${RUN_MODE}" = "gui" ]; then
-      (
-      echo "#  -CHROMIXIUM_SCRIPTS:${CHROMIXIUM_SCRIPTS} already installed, updating from Git"
-      cd "${CHROMIXIUM_SCRIPTS}"
-      echo "# Changed to:$(dirname "$(readlink -f "$0")")"
-      git pull
-      ) | zenity --progress \
-          --title="Sync Scripts..." \
-          --text="Udating from Git..." \
-          --percentage=0 \
-          --auto-close
-        if [ "$?" = -1 ]; then
-          zenity --error --text="Scripts cancelled."
-        fi
-    else #cmd mode
-      echo "  -CHROMIXIUM_SCRIPTS:${CHROMIXIUM_SCRIPTS} already installed, updating from Git"
-      cd "${CHROMIXIUM_SCRIPTS}"
-      echo "Changed to:$(dirname "$(readlink -f "$0")")"
-      git pull
-    fi
-  fi
-
-  # switch to chrome from chromium
-  PKG_NAME=google-chrome-stable
-  # no error abort 
-  set +e
-  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
-  # abort on error 
-  set -e
-  echo "Checking for $PKG_NAME: $PKG_OK"
-  if [ "" == "$PKG_OK" ]; then
-    echo "$PKG_NAME not installed."
-    if [ "$RUN_MODE" = "gui" ]; then
-      # no error abort 
-      set +e
-      zenity --question --text="Switch from Chromium to Chrome?"
-      if [ "$?" = 0 ]; then
-        (
-        . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh
-        ) | zenity --progress \
-          --title="Switch to Chrome..." \
-          --text="Install Chrome..." \
-          --percentage=0 \
-          --auto-close
-        if [ "$?" = -1 ]; then
-          zenity --error --text="Chrome install cancelled."
-        fi
-      else
-        echo "zenity=$?, continiung" 
+  # update/upgrade chrx
+  # use "." so subshell inherits environment variables
+  if [ "${RUN_MODE}" = "gui" ]; then
+    (
+    . $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
+    ) | zenity --progress \
+        --title="Update Chromixium Sync" \
+        --text="Prep for update..." \
+        --percentage=0 \
+        --auto-close
+      if [ "$?" = -1 ]; then
+        zenity --error --text="Update cancelled."
       fi
-      # abort on error 
-      set -e
-    else # cmd mode
-      echo ""
-      while true; do
-        read -p "Switch from Chromium to Chrome? (y/n):" yn
-        case $yn in
-          [Yy]* ) . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh
-                  break
-                  ;;
-          [Nn]* ) break
-                  ;;
-           * ) echo "Please answer y or n"
-               ;;
-        esac
-      done
-    fi # end gui/cmd line confirm
-  fi # end switch to chrome
-
-  # remap chrome apps
-  if [ "${RUN_MODE}" = "gui" ]; then
-    (
-    echo "  ..remap chrome apps"
-    . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
-    ) | zenity --progress \
-      --title="Remap Chrome Apps..." \
-      --text="Checking apps..." \
-      --percentage=0 \
-      --auto-close
-    if [ "$?" = -1 ]; then
-      zenity --error --text="Remap cancelled."
-    fi
-  else # cmd mode
-    echo "  ..remap chrome apps"
-    . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
-  fi # end remap chrome apps
-
-  # user installs
-  cd $GOOGLE_DATA/$CHRMX_HFILES/.installs
-  echo "# Changed to:$(dirname "$(readlink -f "$0")")"
-  INSTALL_CNT=0
-  if [ "${RUN_MODE}" = "gui" ]; then
-    (
-    echo "#  Install user packages"
-    for f in get-*; do 
-      . $GOOGLE_DATA/$CHRMX_HFILES/.installs/$f
-      (( INSTALL_CNT++ ))
-    done
-    echo "# done."
-    ) | zenity --progress \
-      --title="User Applications..." \
-      --text="Using apt-get..." \
-      --pulsate \
-      --auto-close
-    if [ "$?" = -1 ]; then
-      zenity --error --text="User installs cancelled."
-    fi
-  else # cmd mode
-    echo "Install user packages"
-    for f in get-*; do 
-      . $GOOGLE_DATA/$CHRMX_HFILES/.installs/$f
-    done
-    echo "done."
-  fi # end clean up 
-
-  # clean up
-  if [ "${RUN_MODE}" = "gui" ]; then
-    (
-    echo "#  ..clearing any unused packages"
-    apt-get -y autoremove > /dev/null
-    echo "# done."
-    ) | zenity --progress \
-      --title="Clean up Chromixium..." \
-      --text="Using apt-get..." \
-      --percentage=0 \
-      --auto-close
-    if [ "$?" = -1 ]; then
-      zenity --error --text="Cleanup cancelled."
-    fi
-  else # cmd mode
-    echo "  ..clearing any unused packages"
-    apt-get -y autoremove
-
-    echo ""
-    echo "done."
-  fi # end clean up 
+  else #cmd mode
+    . $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
+  fi
 
 fi
 

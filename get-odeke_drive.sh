@@ -1,8 +1,13 @@
 #!/bin/bash
-echo ""
-echo "Running: get-odeke_drive.sh"
-# by Kevin Saruwatari, 01-Apr-2015
-# free to use with no warranty
+
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Running: get-odeke_drive.sh"
+  sleep 1
+fi
+
+# by Kevin Saruwatari, 02-Apr-2015
+# free to use/distribute with no warranty
 # for use with Qsine installer
 
 # abort on error 
@@ -40,18 +45,16 @@ REF_NAME="$1"
 GOPATH_DIR="$2"
 BASH_HOME_PATH="$3"
 
+# update/upgrade apt
+. $CHROMIXIUM_SCRIPTS/upgrade-apt.sh
+
 # std apt-get packages:
-for i in {1..2}; do
-  # required for golang
-  if [ "$i" == "1" ]; then
-    PKG_NAME="mercurial"
-  fi
-
-  if [ "$i" == "2" ]; then
-    PKG_NAME="golang"
-  fi
-
-  echo "Checking for $PKG_NAME: $PKG_OK"
+for i in \
+    "mercurial" \  # required for golang
+    "golang" \
+; do
+  PKG_NAME="$i"
+  echo "Checking for $PKG_NAME"
   # no error abort
   set +e
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
@@ -65,7 +68,7 @@ for i in {1..2}; do
 done
 
 # create directory if it does not exist
-$CHROMIXIUM_SCRIPTS/custom-dir.sh "${REF_NAME}" "${GOPATH_DIR}" "root"
+. $CHROMIXIUM_SCRIPTS/custom-dir.sh "${REF_NAME}" "${GOPATH_DIR}" "root"
 
 if [ ! "$(ls -A ${GOPATH_DIR})" ]; then
   echo "ODEKE_DRIVE:${GOPATH_DIR} is empty, getting go files..."
@@ -86,5 +89,8 @@ else
   echo "    -ODEKE_DRIVE:${GOPATH_DIR} already installed"
 fi
 
-echo ""
-echo "Exiting: get-odeke_drive.sh"
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "# Exiting: get-odeke_drive.sh"
+  sleep 1
+fi

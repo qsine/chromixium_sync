@@ -1,8 +1,13 @@
 #!/bin/bash
-echo ""
-echo "Running: custom-dir.sh"
+
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "Running: custom-dir.sh"
+#  sleep 1
+fi
+
 # by Kevin Saruwatari, 27-Mar-2015
-# free to use with no warranty
+# free to use/distribute with no warranty
 # makes custom directories 
 # for use with Qsine installer
 
@@ -51,5 +56,8 @@ else
   echo "  -${REF_NAME}:${MAKE_PATH} already exists"
 fi
 
-echo ""
-echo "Exiting: custom-dir.sh"
+if [ $DIAG_MSG = 1 ]; then
+  echo ""
+  echo "Exiting: custom-dir.sh"
+#  sleep 1
+fi

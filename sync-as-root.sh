@@ -56,10 +56,10 @@ if [ ! -h "${SOURCE}" ]; then
   if [ -d "${SOURCE}" ]; then
     echo "${SOURCE} exists, syncing data to ${TARGET}"
     if [ "${RUN_MODE}" = "gui" ]; then
-      rsync -a --links --exclude-from "$EXCL_DIR/sync-excludes" \
+      rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}"/ "${TARGET}"/
     else
-      rsync -aP --links --exclude-from "$EXCL_DIR/sync-excludes" \
+      rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}"/ "${TARGET}"/
     fi
     # always set the top directory to 755

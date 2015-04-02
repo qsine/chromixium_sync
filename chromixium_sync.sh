@@ -656,12 +656,40 @@ if [ "$CONFIG_CODE" = 'install' -o "$CONFIG_CODE" = 'update' ]; then
     . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
   fi # end remap chrome apps
 
+  # user installs
+  cd $GOOGLE_DATA/$CHRMX_HFILES/.installs
+  echo "# Changed to:$(dirname "$(readlink -f "$0")")"
+  INSTALL_CNT=0
+  if [ "${RUN_MODE}" = "gui" ]; then
+    (
+    echo "#  Install user packages"
+    for f in get-*; do 
+      . $GOOGLE_DATA/$CHRMX_HFILES/.installs/$f
+      (( INSTALL_CNT++ ))
+    done
+    echo "# done."
+    ) | zenity --progress \
+      --title="User Applications..." \
+      --text="Using apt-get..." \
+      --pulsate \
+      --auto-close
+    if [ "$?" = -1 ]; then
+      zenity --error --text="User installs cancelled."
+    fi
+  else # cmd mode
+    echo "Install user packages"
+    for f in get-*; do 
+      . $GOOGLE_DATA/$CHRMX_HFILES/.installs/$f
+    done
+    echo "done."
+  fi # end clean up 
+
   # clean up
   if [ "${RUN_MODE}" = "gui" ]; then
     (
     echo "#  ..clearing any unused packages"
     apt-get -y autoremove > /dev/null
-    echo "done."
+    echo "# done."
     ) | zenity --progress \
       --title="Clean up Chromixium..." \
       --text="Using apt-get..." \

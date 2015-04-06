@@ -21,34 +21,30 @@ echo "01"; echo "# remove chromium"
 
 REMOVED_PKGS=0
 
-for i in {1..2}; do
-  if [ "$i" = "1" ]; then
-    PKG_NAME="chromium-browser"
-  fi
-
-  if [ "$i" = "2" ]; then
-    PKG_NAME="pepperflashplugin-nonfree"
-  fi
-
+for i in \
+  "chromium-browser" \
+  "pepperflashplugin-nonfree" \
+; do
   # no error abort
   set +e
+  PKG_NAME="$i"
+  echo "# Checking for $PKG_NAME"
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
   # abort on error 
   set -e
-  echo "$(($i * 5))"; echo "# Checking for $PKG_NAME: $PKG_OK"
-  if [ ! "" == "$PKG_OK" ]; then
+  if [ "install ok installed" == "$PKG_OK" ]; then
     REMOVED_PKGS=$REMOVED_PKGS+1
-    echo "$PKG_NAME installed. Removing $PKG_NAME."
     if [ "$RUN_MODE" = "gui" ]; then
+      echo "$(($REMOVED_PKGS * 5))"; echo "# Installed, removing $PKG_NAME."
       apt-get -y remove $PKG_NAME > /dev/null
     else
+      echo "Installed, removing $PKG_NAME."
       apt-get -y remove $PKG_NAME
     fi
   fi
-
 done
 
-if [ ! "0" == "$REMOVED_PKGs" ]; then
+if [ "$REMOVED_PKGS" -gt "0" ]; then
   echo "20"; echo "# Cleaning up packages"
   if [ ! "" == "$PKG_OK" ]; then
     apt-get -y autoremove > /dev/null
@@ -60,11 +56,11 @@ fi
 echo "25"; echo "# Check if Chrome is installed"
 sleep 1
 
-PKG_NAME=google-chrome-stable
 # no error abort
 set +e
+PKG_NAME="google-chrome-stable"
+echo "26"; echo "# Checking for $PKG_NAME"
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
-echo "26"; echo "# Checking for $PKG_NAME: $PKG_OK"
 if [ "" == "$PKG_OK" ]; then
   echo "27"; echo "# $PKG_NAME not found."
   sleep 1
@@ -99,4 +95,3 @@ if [ $DIAG_MSG = 1 ]; then
   echo "# Exiting: switch-to-chrome.sh"
   sleep 1
 fi
-

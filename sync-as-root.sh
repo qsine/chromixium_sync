@@ -3,10 +3,10 @@
 if [ $DIAG_MSG = 1 ]; then
   echo ""
   echo "# Running: sync-as-root.sh"
-  sleep 1
+#  sleep 1
 fi
 
-# by Kevin Saruwatari, 01-Apr-2015
+# by Kevin Saruwatari, 06-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer push/pull files
 
@@ -92,8 +92,20 @@ if [ ! -h "${SOURCE}" ]; then
     chmod "${PERM_SET}" $(find "${TARGET}" -type f)
     echo "  - file sync complete"
   else
-    echo "  - SOURCE is invalid, exiting"
-    exit 1
+    # if not exist in stock install, create it 
+    if [ ! -d "${SOURCE}" ]; then
+      . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${SOURCE##*/}" "${SOURCE}" "$USER_SET"
+      echo "a file is required for chromixium_sync" >> "${SOURCE}"/chrx-readme
+      chown  "$USER_SET:$USER_SET" "${SOURCE}"/chrx-readme
+      chmod  "644" "${SOURCE}"/chrx-readme
+      if [ "${RUN_MODE}" = "gui" ]; then
+        rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+          "${SOURCE}"/ "${TARGET}"/
+      else
+        rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+          "${SOURCE}"/ "${TARGET}"/
+      fi # gui/cmd
+    fi # dir not exist
   fi
 # check if source link is valid
 elif [ -e "${SOURCE}" ]; then
@@ -110,5 +122,5 @@ sleep 0.5
 if [ $DIAG_MSG = 1 ]; then
   echo ""
   echo "# Exiting: sync-as-root.sh"
-  sleep 1
+#  sleep 1
 fi

@@ -53,15 +53,15 @@ for i in \
     "mercurial" \  # required for golang
     "golang" \
 ; do
-  PKG_NAME="$i"
-  echo "Checking for $PKG_NAME"
   # no error abort
   set +e
+  PKG_NAME="$i"
+  echo "Checking for $PKG_NAME"
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
   # abort on error 
   set -e
   if [ "" == "$PKG_OK" ]; then
-    echo "No $PKG_NAME. Setting up $PKG_NAME."
+    echo "Not installed, setting up $PKG_NAME."
     apt-get -y install $PKG_NAME
   fi
 

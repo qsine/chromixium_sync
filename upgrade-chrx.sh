@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 01-Apr-2015
+# by Kevin Saruwatari, 06-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -33,13 +33,13 @@ fi
 
 # switch to chrome from chromium
 if [ $ASK4CHROME = 1 ]; then 
-  PKG_NAME=google-chrome-stable
   # no error abort 
   set +e
+  PKG_NAME=google-chrome-stable
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
+  echo "40"; echo "Checking for $PKG_NAME"
   # abort on error 
   set -e
-  echo "40"; echo "Checking for $PKG_NAME: $PKG_OK"
   if [ "" == "$PKG_OK" ]; then
     echo "# $PKG_NAME not installed."
     if [ "$RUN_MODE" = "gui" ]; then
@@ -82,16 +82,23 @@ echo "80"; echo "#  ..remap chrome apps"
 sleep 1
 . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
 
+
+# echo "# User installations"
+sleep 1
+USER_INS_PATH="$GOOGLE_DATA/$CHRMX_HFILES/".installs
+chown "$SYNC_USER:$SYNC_USER" "$USER_INS_PATH"/*
+chmod "644" "$USER_INS_PATH"/*
+chmod "750" "$USER_INS_PATH"/*.sh
+
 # user repository installs
-GET_PATH="$GOOGLE_DATA/$CHRMX_HFILES/.installs"
-GET_FILE_CNT=$(ls $GET_PATH/* | grep $GET_PATH/get- | wc -l)
-if [ -d $GET_PATH -a $GET_FILE_CNT -gt 0 ]; then
+GET_FILE_CNT=$(ls $USER_INS_PATH/* | grep $USER_INS_PATH/get- | wc -l)
+if [ -d $USER_INS_PATH -a $GET_FILE_CNT -gt 0 ]; then
 echo "# Installing $GET_FILE_CNT user apt scripts"
 sleep 2
   if [ "${RUN_MODE}" = "gui" ]; then
     (
-    for f in $GET_PATH/get-*; do
-      echo "#  Install user script: $f"
+    for f in $USER_INS_PATH/get-*; do
+      echo "#  Install user script: ${f##*/}"
       . $f
     done
     echo "# done."
@@ -105,8 +112,8 @@ sleep 2
     fi
   else # cmd mode
     echo "Install user packages"
-    for f in $GET_PATH/get-*; do 
-      echo "Install user script: $f"
+    for f in $USER_INS_PATH/get-*; do 
+      echo "Install user script: ${f##*/}"
       . $f
     done
     echo "done."
@@ -114,15 +121,14 @@ sleep 2
 fi # if dir and file exist
 
 # user source build installs
-BUILD_PATH="$GOOGLE_DATA/$CHRMX_HFILES/.installs"
-BUILD_FILE_CNT=$(ls $BUILD_PATH/* | grep $BUILD_PATH/build- | wc -l)
-if [ -d $BUILD_PATH -a $BUILD_FILE_CNT -gt 0 ]; then
+BUILD_FILE_CNT=$(ls $USER_INS_PATH/* | grep $USER_INS_PATH/build- | wc -l)
+if [ -d $USER_INS_PATH -a $BUILD_FILE_CNT -gt 0 ]; then
   echo "# Installing $BUILD_FILE_CNT user build scripts"
   sleep 2
   if [ "${RUN_MODE}" = "gui" ]; then
     (
-    for f in $BUILD_PATH/build-*; do
-      echo "#  User build script: $f"
+    for f in $USER_INS_PATH/build-*; do
+      echo "#  User build script: ${f##*/}"
       . $f
     done
     echo "# done."
@@ -136,8 +142,8 @@ if [ -d $BUILD_PATH -a $BUILD_FILE_CNT -gt 0 ]; then
     fi
   else # cmd mode
     echo "Install user packages"
-    for f in $BUILD_PATH/build-*; do 
-      echo "User build script: $f"
+    for f in $USER_INS_PATH/build-*; do 
+      echo "User build script: ${f##*/}"
       . $f
     done
     echo "done."

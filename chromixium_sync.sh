@@ -3,7 +3,7 @@
 echo ""
 echo "Running: chromixium_sync.sh"
 
-# by Kevin Saruwatari, 01-Apr-2015
+# by Kevin Saruwatari, 06-Apr-2015
 # free to use/distribute with no warranty
 # sync chromixium to Google Drive
 
@@ -225,6 +225,7 @@ DEST_HOME="/home/$SYNC_USER"
     # Local files in home that will not go to Google Drive 
     LOCAL_FILES="$DEST_HOME/LocalFiles"
 # user sync/link dirs
+    USER_GTK2="$DEST_HOME/.config/gtk-2.0"
     USER_GTK3="$DEST_HOME/.config/gtk-3.0"
     USER_CLOCK="$DEST_HOME/.config/lxpanel"
     USER_NAUT="$DEST_HOME/.config/nautilus"
@@ -267,6 +268,7 @@ CHRMX_BASE="Chromixium"
         CHRMX_REPO="$CHRMX_SYNC/$REPO_PROFILE"
             CHRMX_HFILES="$CHRMX_REPO/home_googlefiles"
 # user sync/link dirs
+            CHRMX_GTK2="$CHRMX_REPO/home_user_.config_gtk2"
             CHRMX_GTK3="$CHRMX_REPO/home_user_.config_gtk3"
             CHRMX_CLOCK="$CHRMX_REPO/home_user_.config_lxpanel"
             CHRMX_NAUT="$CHRMX_REPO/home_user_.config_nautilus"
@@ -436,7 +438,9 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
       echo "Checking for Git"
       # no error abort
       set +e
-      PKG_OK=$(dpkg-query -W --showformat='${Status}\n' git|grep "install ok installed")
+      PKG_NAME="git"
+      echo "Checking for $PKG_NAME"
+      PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
       # abort on error 
       set -e
       if [ "" == "$PKG_OK" ]; then
@@ -569,10 +573,41 @@ if [ "$CONFIG_CODE" = 'pull' -o "$CONFIG_CODE" = 'push_pull' ]; then
       if [ "$?" = -1 ]; then
         zenity --error --text="Pull cancelled."
       fi
+
+    set +e
+    zenity --question --text="Run update after pull? (Recommended)"
+    if [ "$?" = 0 ]; then
+      (
+      . $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
+      ) | zenity --progress \
+        --title="Update Chromixium Sync" \
+        --text="Prep for update..." \
+        --percentage=0 \
+        --auto-close
+      if [ "$?" = -1 ]; then
+        zenity --error --text="Update cancelled."
+      fi
+    fi
+    # abort on error 
+    set -e
+
   else #cmd mode
     . $CHROMIXIUM_SCRIPTS/pull-from-drive.sh
-  fi
 
+    echo ""
+    while true; do
+      read -p "Run update after pull? (Recommended) (y/n):" yn
+      case $yn in
+        [Yy]* ) . $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
+                break
+                ;;
+        [Nn]* ) break
+                ;;
+         * ) echo "Please answer y or n"
+             ;;
+      esac
+    done
+  fi # end gui/cmd
 fi
 #============= pull end ================================
 

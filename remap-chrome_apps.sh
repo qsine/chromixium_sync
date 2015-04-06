@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 02-Apr-2015
+# by Kevin Saruwatari, 06-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -81,9 +81,9 @@ if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
   echo " copy in chromium desktop files"
   cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/* "$USER_APPS"/
   # if chrome is installed install chrome adjusted shortcuts
-  PKG_NAME=google-chrome-stable
+  PKG_NAME="google-chrome-stable"
+  echo "Checking for $PKG_NAME"
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
-  echo Checking for $PKG_NAME: $PKG_OK
   if [ "install ok installed" == "$PKG_OK" ]; then
     echo " copy in chrome adjusted shortcuts and icons"
     cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/* "$USER_APPS"/

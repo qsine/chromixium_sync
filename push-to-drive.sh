@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 01-Apr-2015
+# by Kevin Saruwatari, 06-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -22,37 +22,34 @@ cd "$GOOGLE_DATA"
 echo "# Changed to:$(dirname "$(readlink -f "$0")")"
 
 #:::::::::::::::::: link user directories :::::::::::::::::::::
-echo "01"; echo "# gtk3: misc file/desktop settings"
+echo "01"; echo "# gtk2: misc file/desktop settings"
+. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_GTK2" "$GOOGLE_DATA/$CHRMX_GTK2" "664" "$SYNC_USER"
+
+echo "02"; echo "# gtk3: misc file/desktop settings"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_GTK3" "$GOOGLE_DATA/$CHRMX_GTK3" "664" "$SYNC_USER"
 
-echo "02"; echo "# lxpanel: clock/date settings"
+echo "03"; echo "# lxpanel: clock/date settings"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_CLOCK" "$GOOGLE_DATA/$CHRMX_CLOCK" "664" "$SYNC_USER"
 
-echo "03"; echo "# nautilus: file manager settings"
+echo "04"; echo "# nautilus: file manager settings"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_NAUT" "$GOOGLE_DATA/$CHRMX_NAUT" "664" "$SYNC_USER"
 
-echo "04"; echo "# nitrogen: current wallpaper settings"
+echo "05"; echo "# nitrogen: current wallpaper settings"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_UWALL" "$GOOGLE_DATA/$CHRMX_UWALL" "644" "$SYNC_USER"
 
-echo "05"; echo "# ob-autostart: user autostart"
+echo "06"; echo "# ob-autostart: user autostart"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_ASTART" "$GOOGLE_DATA/$CHRMX_ASTART" "644" "$SYNC_USER"
 
-echo "06"; echo "# openbox: menu settings"
+echo "07"; echo "# openbox: menu settings"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_MENU" "$GOOGLE_DATA/$CHRMX_MENU" "644" "$SYNC_USER"
 
-echo "07"; echo "# plank: dock settings"
+echo "08"; echo "# plank: dock settings"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_DOCK" "$GOOGLE_DATA/$CHRMX_DOCK" "750" "$SYNC_USER"
 
-echo "08"; echo "# screenlayout: multi-monitor settings"
-#   don't exist in stock install so create it to keep error checking in sync-as-root valid
-if [ ! -d "$USER_SCRNL" ]; then
-  . $CHROMIXIUM_SCRIPTS/custom-dir.sh "USER_SCRNL" "$USER_SCRNL" "$SYNC_USER"
-  echo "# a file is required for chromixium_sync" >> "$USER_SCRNL"/chrx-readme
-  chown  "$SYNC_USER:$SYNC_USER" "$USER_SCRNL"/chrx-readme
-fi
+echo "09"; echo "# screenlayout: multi-monitor settings"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_SCRNL" "$GOOGLE_DATA/$CHRMX_SCRNL" "750" "$SYNC_USER"
 
-echo "09"; echo "# applications: home folder shortcuts"
+echo "10"; echo "# applications: home folder shortcuts"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$USER_APPS" "$GOOGLE_DATA/$CHRMX_UAPPS" "750" "$SYNC_USER"
 
 #:::::::::::::::::: sync files :::::::::::::::::::::

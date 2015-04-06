@@ -3,10 +3,10 @@
 if [ $DIAG_MSG = 1 ]; then
   echo ""
   echo "# Running: link-usr-dir.sh"
-  sleep 1
+#  sleep 1
 fi
 
-# by Kevin Saruwatari, 01-Apr-2015
+# by Kevin Saruwatari, 06-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer pulling files
 
@@ -45,8 +45,29 @@ REPO_PATH="${1}"
 ORIG_PATH="${2}"
 PERM_SET="${3}"
 
+# if no REPO_PATH...
+if [ ! -d "${REPO_PATH}" ]; then
+  echo "# REPO_PATH:${REPO_PATH##*/} not found..."
+  sleep 1
+  # ...and no original path or already linked, create the repo path
+  if [ ! -d "${ORIG_PATH}" -o -h "${ORIG_PATH}" ]; then
+    echo "# ...ORIG_PATH:${ORIG_PATH##*/} not found either, faking a repo"
+    sleep 1
+    . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${REPO_PATH##*/}" "${REPO_PATH}" "$SYNC_USER"
+    echo "a file is required for chromixium_sync" >> "${REPO_PATH}"/chrx-readme
+    chown  "$SYNC_USER:$SYNC_USER" "${REPO_PATH}"/chrx-readme
+    chmod  "664" "${REPO_PATH}"/chrx-readme
+  else # ... and there is an original directory, put it to the repo
+    echo "# ...ORIG_PATH:${ORIG_PATH##*/} found, syncing to repo"
+    sleep 1
+    . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "${ORIG_PATH}" "${REPO_PATH}" "${PERM_SET}" "$SYNC_USER"
+  fi # original dir
+fi # repo dir not exist
+
+
 echo ""
-echo "Setup/verify link for ${ORIG_PATH}"
+echo "# repo okay, setup/verify link for ${ORIG_PATH##*/}"
+sleep 1
 # always set the top directory to 755
 chmod 755 $(find "${REPO_PATH}" -type d)
 chmod "${PERM_SET}" $(find "${REPO_PATH}" -type f)
@@ -74,8 +95,10 @@ else
   echo "  - ORIG_PATH:${ORIG_PATH} link updated"
 fi
 
+echo "LOGOFF REQUIRED" > /tmp/LOGOFF_FLAG
+
 if [ $DIAG_MSG = 1 ]; then
   echo ""
   echo "# Exiting: link-usr-dir.sh"
-  sleep 1
+#  sleep 1
 fi

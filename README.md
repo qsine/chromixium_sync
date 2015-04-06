@@ -2,7 +2,7 @@
 Sync Chromixium user account to Google Drive
 
 #----------------------------------------------
-29-Mar-2015: pre-Alpha test only if you are brave!  Make an image of your system with CloneZilla first.
+06-Apr-2015: pre-Alpha test only if you are brave!  Make an image of your system with CloneZilla first.
 
 Seems to be working okay on fresh install of Chromixium (root priveledges required):
  - cd /tmp
@@ -52,22 +52,4 @@ The file structure gets modified by these scripts:
  - the paths are all in chromixium_sync.sh
  - look at remap-chrome_apps.sh, pull-from-drive.sh and push-to-drive.sh to see the changes
 
-#----------------------------------------------
-29-Mar-2015: pre-Alpha test only if you are brave!  Make an image of your system with CloneZilla first.
-
-#----------------------------------------------
-27-Mar-2015: pre-Alpha test only if you are brave!
-
-The scripts seem to be working but I highly recommend making an image of your system with CloneZilla first.
-
-#----------------------------------------------
-20-Mar-2015: pre-Alpha Don't test!
-
-The scripts are working from /tmp directory on fresh installs of Chromixium to multiple repo's on the drive.  I am putting them on Git today to test pulling and installing.
-
-#----------------------------------------------
-13-Mar-2015: Not useful to anyone yet.
-
-This is just me hoping to sync my settings on Google Drive with scripts.
-
-Created Git repo
+Will find and run user scripts in CHRMX_HFILES/.installs named get-* or build-*.

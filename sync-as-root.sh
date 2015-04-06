@@ -59,7 +59,8 @@ echo ""
 if [ ! -h "${SOURCE}" ]; then
   # not a link, check if source is a directory
   if [ -d "${SOURCE}" ]; then
-    echo "${SOURCE} exists, syncing data to ${TARGET}"
+    echo "# ${SOURCE##*/} exists, syncing data to ${TARGET##*/}"
+    sleep 1
     if [ "${RUN_MODE}" = "gui" ]; then
       rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}"/ "${TARGET}"/
@@ -77,7 +78,8 @@ if [ ! -h "${SOURCE}" ]; then
     chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
   # check if source is a file
   elif [ -f "${SOURCE}" ]; then
-    echo "${SOURCE} exists, syncing data to ${TARGET}"
+    echo "# ${SOURCE##*/} exists, syncing data to ${TARGET##*/}"
+    sleep 1
     if [ "${RUN_MODE}" = "gui" ]; then
       rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}" "${TARGET}"
@@ -95,9 +97,11 @@ if [ ! -h "${SOURCE}" ]; then
   fi
 # check if source link is valid
 elif [ -e "${SOURCE}" ]; then
-  echo  "${SOURCE} already linked, not synching"
+  echo  "# ${SOURCE##*/} already linked, not synching"
+  sleep 1
 else
-  echo  "${SOURCE} link is broken, exiting."
+  echo  "# ${SOURCE} link is broken, exiting."
+  sleep 2
   exit 1
 fi
 

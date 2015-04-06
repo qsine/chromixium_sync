@@ -21,16 +21,21 @@ echo "# Changed to:$(dirname "$(readlink -f "$0")")"
 #============= pull start ================================
 echo "01"; echo "# Preparing to pull"
 # pull repo 
-(
+if [ "${RUN_MODE}" = "gui" ]; then
+  (
+    drive pull -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 
+  ) | zenity --progress \
+      --title="Pull from Google Drive" \
+      --text="Pulling Google Drive to $GOOGLE_DATA..." \
+      --percentage=0 \
+      --auto-close
+    if [ "$?" = -1 ]; then
+      zenity --error --text="Pull cancelled."
+    fi
+else # cmd mode
   drive pull -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 
-) | zenity --progress \
-    --title="Pull from Google Drive" \
-    --text="Pulling Google Drive to $GOOGLE_DATA..." \
-    --percentage=0 \
-    --auto-close
-  if [ "$?" = -1 ]; then
-    zenity --error --text="Pull cancelled."
-  fi
+fi
+
 echo "60"; echo "# Buffer pulled from Google Drive"
 sleep 1
 

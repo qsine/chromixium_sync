@@ -76,17 +76,20 @@ echo "32"; echo "# /usr/share/wallpapers: wallpaper selection"
 
 #===================== push start ================================
 echo "40"; echo "# Preparing to push..."
-
-(
+if [ "${RUN_MODE}" = "gui" ]; then
+  (
+    drive push -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 
+  ) | zenity --progress \
+      --title="Push to Google Drive" \
+      --text="Pushing $GOOGLE_DATA to Google Drive..." \
+      --percentage=0 \
+      --auto-close
+    if [ "$?" = -1 ]; then
+      zenity --error --text="Pull cancelled."
+    fi
+else # cmd mode
   drive push -ignore-conflict -hidden=true -no-prompt=true "$CHRMX_REPO" 
-) | zenity --progress \
-    --title="Push to Google Drive" \
-    --text="Pushing $GOOGLE_DATA to Google Drive..." \
-    --percentage=0 \
-    --auto-close
-  if [ "$?" = -1 ]; then
-    zenity --error --text="Pull cancelled."
-  fi
+fi
 
 echo "99"; echo "# Buffer pushed to Google Drive"
 sleep 1

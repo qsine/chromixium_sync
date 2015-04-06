@@ -83,14 +83,14 @@ sleep 1
 . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
 
 # user repository installs
-GET_FILES=( $GOOGLE_DATA/$CHRMX_HFILES/.installs/get-* )
-if [ -d $GOOGLE_DATA/$CHRMX_HFILES/.installs -a "${#GET_FILES[@]}" -gt 0 ]; then
-echo "# Installing ${#GET_FILES[@]} user apt scripts"
+GET_PATH="$GOOGLE_DATA/$CHRMX_HFILES/.installs"
+GET_FILE_CNT=$(ls $GET_PATH/* | grep $GET_PATH/get- | wc -l)
+if [ -d $GET_PATH -a $GET_FILE_CNT -gt 0 ]; then
+echo "# Installing $GET_FILE_CNT user apt scripts"
 sleep 2
   if [ "${RUN_MODE}" = "gui" ]; then
     (
-    for f in $GOOGLE_DATA/$CHRMX_HFILES/.installs/get-*; do 
-      read -p "ins $f"
+    for f in $GET_PATH/get-*; do
       echo "#  Install user script: $f"
       . $f
     done
@@ -105,7 +105,7 @@ sleep 2
     fi
   else # cmd mode
     echo "Install user packages"
-    for f in $GOOGLE_DATA/$CHRMX_HFILES/.installs/get-*; do 
+    for f in $GET_PATH/get-*; do 
       echo "Install user script: $f"
       . $f
     done
@@ -114,20 +114,35 @@ sleep 2
 fi # if dir and file exist
 
 # user source build installs
-BUILD_FILES=( $GOOGLE_DATA/$CHRMX_HFILES/.installs/build-* )
-if [ -d $GOOGLE_DATA/$CHRMX_HFILES/.installs -a "${#BUILD_FILES[@]}" -gt 0 ]; then
-  echo "# Installing ${#BUILD_FILES[@]} user build scripts"
+BUILD_PATH="$GOOGLE_DATA/$CHRMX_HFILES/.installs"
+BUILD_FILE_CNT=$(ls $BUILD_PATH/* | grep $BUILD_PATH/build- | wc -l)
+if [ -d $BUILD_PATH -a $BUILD_FILE_CNT -gt 0 ]; then
+  echo "# Installing $BUILD_FILE_CNT user build scripts"
   sleep 2
-  # gui mode not allowed
-  for f in $GOOGLE_DATA/$CHRMX_HFILES/.installs/build-*; do 
-    read -p "ins $f"
-    echo "#  Install user script: $f"
-    gnome-terminal -e ". $f"
-  done
-  echo "# done."
+  if [ "${RUN_MODE}" = "gui" ]; then
+    (
+    for f in $BUILD_PATH/build-*; do
+      echo "#  User build script: $f"
+      . $f
+    done
+    echo "# done."
+    ) | zenity --progress \
+      --title="User Builds..." \
+      --text="Building from source..." \
+      --pulsate \
+      --auto-close
+    if [ "$?" = -1 ]; then
+      zenity --error --text="User builds cancelled."
+    fi
+  else # cmd mode
+    echo "Install user packages"
+    for f in $BUILD_PATH/build-*; do 
+      echo "User build script: $f"
+      . $f
+    done
+    echo "done."
+  fi # end user builds 
 fi # if dir and file exist
-
-
 
 # update/upgrade/cleanup apt
 . $CHROMIXIUM_SCRIPTS/upgrade-apt.sh

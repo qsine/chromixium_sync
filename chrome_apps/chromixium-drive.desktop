@@ -5,7 +5,8 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Drive
-Exec=chromium-browser --profile-directory=Default --app-id=apdfllckaahabafndbhieahigkjlhalf
+#Exec=chromium-browser --profile-directory=Default --app-id=apdfllckaahabafndbhieahigkjlhalf
+Exec=chromium-browser https://drive.google.com/drive/my-drive
 Icon=/usr/share/pixmaps/chromixium/chrome-apdfllckaahabafndbhieahigkjlhalf-Default.png
 StartupWMClass=crx_apdfllckaahabafndbhieahigkjlhalf
 NoDisplay=false

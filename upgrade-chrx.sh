@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $DIAG_MSG = 1 ]; then
-  echo ""
+  echo " "
   echo "# Running: upgrade-chrx.sh"
   sleep 1
 fi
@@ -14,7 +14,7 @@ fi
 # abort on error 
 set -e
 
-ASK4CHROME=1
+ASK4CHROME=0
 
 echo "05"; echo "# check for apt update/upgrade/cleanup"
 . $CHROMIXIUM_SCRIPTS/upgrade-apt.sh
@@ -35,7 +35,7 @@ fi
 if [ $ASK4CHROME = 1 ]; then 
   # no error abort 
   set +e
-  PKG_NAME=google-chrome-stable
+  PKG_NAME="google-chrome-stable"
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
   echo "40"; echo "Checking for $PKG_NAME"
   # abort on error 
@@ -51,7 +51,7 @@ if [ $ASK4CHROME = 1 ]; then
         . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh
       else
         # don't ask for chrome install again
-        sed -i "s%ASK4CHROME=1%ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
+        sed -i "s%ASK4CHROME=0%ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
         sleep 1 
       fi
       # abort on error 
@@ -66,7 +66,7 @@ if [ $ASK4CHROME = 1 ]; then
                   break
                   ;;
           [Nn]* ) # don't ask for chrome install again
-                  sed -i "s%ASK4CHROME=1%ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
+                  sed -i "s%ASK4CHROME=0%ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
                   break
                   ;;
            * ) echo "Please answer y or n"
@@ -85,70 +85,76 @@ sleep 1
 
 # echo "# User installations"
 sleep 1
-USER_INS_PATH="$GOOGLE_DATA/$CHRMX_UCUST
-chown "$SYNC_USER:$SYNC_USER" "$USER_INS_PATH"/*
-chmod "644" "$USER_INS_PATH"/*
-chmod "750" "$USER_INS_PATH"/*.sh
+USER_INS_PATH="$GOOGLE_DATA/$CHRMX_UCUST"
 
-# user repository installs
-GET_FILE_CNT=$(ls $USER_INS_PATH/* | grep $USER_INS_PATH/get- | wc -l)
-if [ -d $USER_INS_PATH -a $GET_FILE_CNT -gt 0 ]; then
-echo "# Installing $GET_FILE_CNT user apt scripts"
-sleep 2
-  if [ "${RUN_MODE}" = "gui" ]; then
-    (
-    for f in $USER_INS_PATH/get-*; do
-      echo "#  Install user script: ${f##*/}"
-      . $f
-    done
-    echo "# done."
-    ) | zenity --progress \
-      --title="User Applications..." \
-      --text="Using apt-get..." \
-      --pulsate \
-      --auto-close
-    if [ "$?" = -1 ]; then
-      zenity --error --text="User installs cancelled."
-    fi
-  else # cmd mode
-    echo "Install user packages"
-    for f in $USER_INS_PATH/get-*; do 
-      echo "Install user script: ${f##*/}"
-      . $f
-    done
-    echo "done."
-  fi # end user apts 
-fi # if dir and file exist
+if [ "$(ls -A $USER_INS_PATH)" ]; then
+  chown "$SYNC_USER:$SYNC_USER" "$USER_INS_PATH"/*
+  chmod "644" "$USER_INS_PATH"/*
+  chmod "750" "$USER_INS_PATH"/*.sh
 
-# user source build installs
-BUILD_FILE_CNT=$(ls $USER_INS_PATH/* | grep $USER_INS_PATH/build- | wc -l)
-if [ -d $USER_INS_PATH -a $BUILD_FILE_CNT -gt 0 ]; then
-  echo "# Installing $BUILD_FILE_CNT user build scripts"
+  # user repository installs
+  GET_FILE_CNT=$(ls $USER_INS_PATH/* | grep $USER_INS_PATH/get- | wc -l)
+  if [ -d $USER_INS_PATH -a $GET_FILE_CNT -gt 0 ]; then
+  echo "# Installing $GET_FILE_CNT user apt scripts"
   sleep 2
-  if [ "${RUN_MODE}" = "gui" ]; then
-    (
-    for f in $USER_INS_PATH/build-*; do
-      echo "#  User build script: ${f##*/}"
-      . $f
-    done
-    echo "# done."
+    if [ "${RUN_MODE}" = "gui" ]; then
+      (
+      for f in $USER_INS_PATH/get-*; do
+        echo "#  Install user script: ${f##*/}"
+        . $f
+      done
+      echo "# done."
     ) | zenity --progress \
-      --title="User Builds..." \
-      --text="Building from source..." \
-      --pulsate \
-      --auto-close
-    if [ "$?" = -1 ]; then
-      zenity --error --text="User builds cancelled."
-    fi
-  else # cmd mode
-    echo "Install user packages"
-    for f in $USER_INS_PATH/build-*; do 
-      echo "User build script: ${f##*/}"
-      . $f
-    done
-    echo "done."
-  fi # end user builds 
-fi # if dir and file exist
+        --title="User Applications..." \
+        --text="Using apt-get..." \
+        --pulsate \
+        --auto-close
+      if [ "$?" = -1 ]; then
+        zenity --error --text="User installs cancelled."
+      fi
+    else # cmd mode
+      echo "Install user packages"
+      for f in $USER_INS_PATH/get-*; do 
+        echo "Install user script: ${f##*/}"
+        . $f
+      done
+      echo "done."
+    fi # end user apts 
+  fi # if get files exist
+
+  # user source build installs
+  BUILD_FILE_CNT=$(ls $USER_INS_PATH/* | grep $USER_INS_PATH/build- | wc -l)
+  if [ -d $USER_INS_PATH -a $BUILD_FILE_CNT -gt 0 ]; then
+    echo "# Installing $BUILD_FILE_CNT user build scripts"
+    sleep 2
+    if [ "${RUN_MODE}" = "gui" ]; then
+      (
+      for f in $USER_INS_PATH/build-*; do
+        echo "#  User build script: ${f##*/}"
+        . $f
+      done
+      echo "# done."
+      ) | zenity --progress \
+        --title="User Builds..." \
+        --text="Building from source..." \
+        --pulsate \
+        --auto-close
+      if [ "$?" = -1 ]; then
+        zenity --error --text="User builds cancelled."
+      fi
+    else # cmd mode
+      echo "Install user packages"
+      for f in $USER_INS_PATH/build-*; do 
+        echo "User build script: ${f##*/}"
+        . $f
+      done
+      echo "done."
+    fi # end user builds 
+  fi # if build files exist
+else
+  echo "# No user installation scripts found"
+  sleep 1
+fi # user scripts exits
 
 # update/upgrade/cleanup apt
 . $CHROMIXIUM_SCRIPTS/upgrade-apt.sh
@@ -156,7 +162,7 @@ fi # if dir and file exist
 echo "99"
 
 if [ $DIAG_MSG = 1 ]; then
-  echo ""
+  echo " "
   echo "# Exiting: upgrade-chrx.sh"
   sleep 1
 fi

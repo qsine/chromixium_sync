@@ -50,7 +50,7 @@ BASH_HOME_PATH="$3"
 
 # std apt-get packages:
 for i in \
-    "mercurial" \  # required for golang
+    "mercurial" \
     "golang" \
 ; do
   # no error abort

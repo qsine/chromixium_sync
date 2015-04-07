@@ -415,6 +415,7 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
   if [ "$CS_STATE" -lt 7 ]; then
     echo "CHROMIXIUM_SCRIPTS missing, install Git and clone"
 
+    WHERE_I_AM="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     if [ "$GET_SCRIPTS" = "copy" ]; then
       # make script directory if it doesn't exist
       if [ ! -d "$CHROMIXIUM_SCRIPTS" ]; then
@@ -426,13 +427,12 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
         echo "  -CHROMIXIUM_SCRIPTS:$CHROMIXIUM_SCRIPTS already exists..."
       fi # end make scripts
       # find where we are running from 
-      WHERE_I_AM="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-      rsync -aP --delete --exclude .git "${WHERE_I_AM}/" "${CHROMIXIUM_SCRIPTS}/"
+      rsync -aP --delete --exclude .git "${WHERE_I_AM}"/ "${CHROMIXIUM_SCRIPTS}"/
       chmod "755" "$CHROMIXIUM_SCRIPTS"/*.sh
       echo "CHROMIXIUM_SCRIPTS:$CHROMIXIUM_SCRIPTS installed"
     else
       # update/upgrade apt
-      . $CHROMIXIUM_SCRIPTS/upgrade-apt.sh
+      . "${WHERE_I_AM}"/upgrade-apt.sh
 
       # install Git if missing
       echo "Checking for Git"

@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 06-Apr-2015
+# by Kevin Saruwatari, 07-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -51,7 +51,7 @@ if [ $ASK4CHROME = 1 ]; then
         . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh
       else
         # don't ask for chrome install again
-        sed -i "s%$ASK4CHROME=1%$ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
+        sed -i "s%ASK4CHROME=1%ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
         sleep 1 
       fi
       # abort on error 
@@ -66,7 +66,7 @@ if [ $ASK4CHROME = 1 ]; then
                   break
                   ;;
           [Nn]* ) # don't ask for chrome install again
-                  sed -i "s%$ASK4CHROME=1%$ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
+                  sed -i "s%ASK4CHROME=1%ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
                   break
                   ;;
            * ) echo "Please answer y or n"
@@ -85,7 +85,7 @@ sleep 1
 
 # echo "# User installations"
 sleep 1
-USER_INS_PATH="$GOOGLE_DATA/$CHRMX_HFILES/".installs
+USER_INS_PATH="$GOOGLE_DATA/$CHRMX_UCUST
 chown "$SYNC_USER:$SYNC_USER" "$USER_INS_PATH"/*
 chmod "644" "$USER_INS_PATH"/*
 chmod "750" "$USER_INS_PATH"/*.sh

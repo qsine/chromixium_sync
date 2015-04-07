@@ -3,7 +3,7 @@
 echo ""
 echo "Running: chromixium_sync.sh"
 
-# by Kevin Saruwatari, 06-Apr-2015
+# by Kevin Saruwatari, 07-Apr-2015
 # free to use/distribute with no warranty
 # sync chromixium to Google Drive
 
@@ -267,6 +267,7 @@ CHRMX_BASE="Chromixium"
     CHRMX_SYNC="$CHRMX_BASE/chromixium_profiles"
         CHRMX_REPO="$CHRMX_SYNC/$REPO_PROFILE"
             CHRMX_HFILES="$CHRMX_REPO/home_googlefiles"
+                CHRMX_UCUST="$CHRMX_HFILES/.installs"
 # user sync/link dirs
             CHRMX_GTK2="$CHRMX_REPO/home_user_.config_gtk2"
             CHRMX_GTK3="$CHRMX_REPO/home_user_.config_gtk3"
@@ -415,6 +416,7 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
   if [ "$CS_STATE" -lt 7 ]; then
     echo "CHROMIXIUM_SCRIPTS missing, install Git and clone"
 
+    # find where we are running from 
     WHERE_I_AM="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     if [ "$GET_SCRIPTS" = "copy" ]; then
       # make script directory if it doesn't exist
@@ -426,7 +428,6 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
       else
         echo "  -CHROMIXIUM_SCRIPTS:$CHROMIXIUM_SCRIPTS already exists..."
       fi # end make scripts
-      # find where we are running from 
       rsync -aP --delete --exclude .git "${WHERE_I_AM}"/ "${CHROMIXIUM_SCRIPTS}"/
       chmod "755" "$CHROMIXIUM_SCRIPTS"/*.sh
       echo "CHROMIXIUM_SCRIPTS:$CHROMIXIUM_SCRIPTS installed"

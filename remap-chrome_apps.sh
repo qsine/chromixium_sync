@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 06-Apr-2015
+# by Kevin Saruwatari, 07-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -113,6 +113,9 @@ fi
 # create directory in Google Data that will push/pull
 #  and make a link to for user Desktop in nautilus below
 . $CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_HFILES" "$GOOGLE_DATA/$CHRMX_HFILES" "$SYNC_USER"
+
+# make the user custom script directory
+. $CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_UCUST" "$GOOGLE_DATA/$CHRMX_UCUST" "$SYNC_USER"
 
 # make sure user-dir update is off so manual changes stick 
 echo "enabled=False" > ~/.config/user-dirs.conf

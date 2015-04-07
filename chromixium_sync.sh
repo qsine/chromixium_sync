@@ -461,7 +461,7 @@ if [ $CS_STATE -lt 9 -o "$CONFIG_CODE" = 'install' ]; then
     echo "" >> "$USER_APPS"/chrxsync.desktop
     echo "[Desktop Entry]" >> "$USER_APPS"/chrxsync.desktop
     echo "Version=1.0" >> "$USER_APPS"/chrxsync.desktop
-    echo "Terminal=false" >> "$USER_APPS"/chrxsync.desktop
+    echo "Terminal=true" >> "$USER_APPS"/chrxsync.desktop
     echo "Type=Application" >> "$USER_APPS"/chrxsync.desktop
     echo "Name=Chromixium Sync" >> "$USER_APPS"/chrxsync.desktop
     echo "StartupWMClass=zenity" >> "$USER_APPS"/chrxsync.desktop

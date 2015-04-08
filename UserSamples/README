@@ -1,0 +1,17 @@
+After a setup there is a folder named "home_googlefiles" in the user repo and the user Desktop directory get linked to it.  This works okay because Chromixium doesn't display the contents on the desktop.  If this turns out to be a good feature in Chromixium, I am hoping Nautilus can be recompiled to show "GoogleFiles" or something saying it goes to Drive as opposed to the LocalFiles I created.
+
+"home_googlefiles" is created with a directory called .installs that can be accessed via Nautilus by clicking on Desktop and hitting CTRL-H (show hidden).  Any files for configuration can be kept in here but the scripts look for any file names starting with get- or build- and will run them if they have executable permissions.
+
+Watchout when putting files in Desktop/.installs as a "pull" will clobber your data unless you "push-pull".
+
+The files in this directory are some sample files that can me modified by anyone with some script building talents to ensure Chromixium installs the software you need not just bring across your settings.
+
+build-freerdp.sh, for example sets up a build environment, compiles and installs FreeRDP so I can remote desktop to Windows machines.  When the script runs in --update mode, build-freerdp.sh refreshes the source code, recompiles and reinstalls.
+
+build-qsine_machines.sh is where I put little config changes that are specific to a given machine.  One of my laptops needs Broadcom drivers, so this script singles out the machine and installs them.  I'm sure there will be others.
+
+get-apts.sh simply installs apps from repository.  Libre Office, eVince, and calculator are things I need on my machines.
+
+Anything installed from Ubuntu repo's will upgrade with apt-get.
+
+You can modify these scripts and put them in your .installs folder for your applications.

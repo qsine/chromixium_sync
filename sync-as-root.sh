@@ -68,8 +68,8 @@ if [ ! -h "${SOURCE}" ]; then
         "${SOURCE}"/ "${TARGET}"/
     fi
     chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
-    # always set the top directory to 755
-    chmod 755 $(find "${TARGET}" -type d)
+    # always set the directories to 755
+    chmod "755" $(find "${TARGET}" -type d)
     # make sure a file exists
     if [ "$(ls -A ${TARGET})" ]; then
       chmod "${PERM_SET}" $(find "${TARGET}" -type f)
@@ -81,7 +81,7 @@ if [ ! -h "${SOURCE}" ]; then
     . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${TARGET%*${TARGET##*/}}" "${TARGET%*${TARGET##*/}}" "${USER_SET}"
     chown "${USER_SET}":"${USER_SET}" "${TARGET%*${TARGET##*/}}"
     # always set the top directory to 755
-    chmod 755 $(find "${TARGET%*${TARGET##*/}}" -type d)
+    chmod "755" "${TARGET%*${TARGET##*/}}"
     if [ "${RUN_MODE}" = "gui" ]; then
       rsync -a  --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}" "${TARGET}"
@@ -89,14 +89,14 @@ if [ ! -h "${SOURCE}" ]; then
       rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}" "${TARGET}"
     fi
+    # owner/permission on file
     chown "${USER_SET}":"${USER_SET}" "${TARGET}"
-    chmod "${PERM_SET}" $(find "${TARGET}" -type f)
-    echo "  - file sync complete"
+    chmod "${PERM_SET}" "${TARGET}"
   else
     if [ ! -d "${SOURCE}" -a  ! -f "${SOURCE}" ]; then
     echo "# ...${SOURCE##*/} does not exist..."
       if [ -d "${TARGET}" ]; then
-        echo "# ...but TARGET dir does, sync ${TARGET##*/} to ${SOURCE##*/}"
+        echo "# ...but TARGET dir does, sync back ${TARGET##*/} to ${SOURCE##*/}"
         sleep 1
         if [ "${RUN_MODE}" = "gui" ]; then
           rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
@@ -105,9 +105,12 @@ if [ ! -h "${SOURCE}" ]; then
           rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
             "${TARGET}"/ "${SOURCE}"/
         fi
+        # owner/permissions are still meant for TARGET
+        # don't set ownership on source it will happen next push
+        PUSH_REQD=1
         chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
-        # always set the top directory to 755
-        chmod 755 $(find "${TARGET}" -type d)
+        # always set the directories to 755
+        chmod "755" $(find "${TARGET}" -type d)
         # make sure a file exists
         if [ "$(ls -A ${TARGET})" ]; then
           chmod "${PERM_SET}" $(find "${TARGET}" -type f)
@@ -116,9 +119,9 @@ if [ ! -h "${SOURCE}" ]; then
         echo "# ...but TARGET file does, sync ${TARGET##*/} to ${SOURCE##*/}"
         sleep 1
         . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${SOURCE%*${SOURCE##*/}}" "${SOURCE%*${SOURCE##*/}}" "${USER_SET}"
-        chown "${USER_SET}":"${USER_SET}" "${SOURCE%*${SOURCE##*/}}"
+        # don't set ownership on source it will happen next push
         # always set the top directory to 755
-        chmod 755 $(find "${SOURCE%*${SOURCE##*/}}" -type d)
+        chmod "755" "${SOURCE%*${SOURCE##*/}}"
         if [ "${RUN_MODE}" = "gui" ]; then
           rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
             "${TARGET}" "${SOURCE}"
@@ -126,8 +129,11 @@ if [ ! -h "${SOURCE}" ]; then
           rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
             "${TARGET}" "${SOURCE}"
         fi
-        chown "${USER_SET}":"${USER_SET}" "${SOURCE}"
-        chmod "${PERM_SET}" $(find "${SOURCE}" -type f)
+        # owner/permissions are still meant for TARGET
+        # don't set ownership on source it will happen next push
+        PUSH_REQD=1
+        chown "${USER_SET}":"${USER_SET}" "${TARGET}"
+        chmod "${PERM_SET}" "${TARGET}"
       else 
         echo "# ...no TARGET either, creating ${SOURCE##*/}"
         sleep 1

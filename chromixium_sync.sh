@@ -27,6 +27,8 @@ if [ -f "/tmp/LOGOFF_FLAG" ]; then
   rm /tmp/LOGOFF_FLAG
 fi
 
+PUSH_REQD=0
+
 # turn diagnostic messages on/off
 DIAG_MSG=1
 CS_STATE=0 # installation in unknown status
@@ -655,10 +657,24 @@ if [ "$CONFIG_CODE" = 'pull' -o "$CONFIG_CODE" = 'push_pull' ]; then
 fi
 #============= pull end ================================
 
-echo ""
-echo "Exiting: chromixium_sync.sh"
-if [ "${RUN_MODE}" = "gui" ]; then
+#============= check for push start ================================
+
+if [ "$PUSH_REQD" = "1" ]; then
+  zenity --info --text="PUSH IS REQUIRED, perform after logout or power cycle"
+else
+  echo ""
+  echo "Exiting: chromixium_sync.sh"
+fi
+
+#============= check for push end ================================
+
+
+
+if [ "$RUN_MODE" = "gui" ]; then
   zenity --info --text="Chromixium Sync complete."
+else
+  echo ""
+  echo "Exiting: chromixium_sync.sh"
 fi
 
 # reboot if required

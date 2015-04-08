@@ -68,45 +68,37 @@ fi
 #============= clear /usr apps end ================================
 
 #============= remap apps and launcher start ================================
-# check if desktop files have been copied previously
-CHROM_FILE_COUNT=0
-for f in "$USER_APPS"/chromixium*; do
-  CHROM_FILE_COUNT=$(($CHROM_FILE_COUNT+1))
-done
-echo "CHROM_FILE_COUNT:$CHROM_FILE_COUNT"
-if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
-  # no error abort
-  set +e
-  rm "$USER_APPS"/chromixium*
-  echo " copy in chromium desktop files and icons"
-  cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/* "$USER_APPS"/
-  cp "$CHROMIXIUM_SCRIPTS"/pixmaps/* "$APP_ICONS"/
-  # if chrome is installed install chrome adjusted shortcuts
-  PKG_NAME="google-chrome-stable"
-  echo "Checking for $PKG_NAME"
-  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
-  if [ "install ok installed" == "$PKG_OK" ]; then
-    echo " copy in chrome adjusted shortcuts and icons"
-    cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/* "$USER_APPS"/
-  fi
-  chown "$SYNC_USER:$SYNC_USER" "$USER_APPS"/*
-  chmod "750" "$USER_APPS"/*
-
-  # delete old launchers and copy in adjusted stock ones
-  rm "$USER_DOCK"/launchers/chrom*
-  cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/launchers/* "$USER_DOCK"/launchers/
-  chown "$SYNC_USER:$SYNC_USER" "$USER_DOCK"/launchers/*
-  chmod "750" "$USER_DOCK"/launchers/*
-  # repoint launchers to user home directory 
-  for f in "$USER_DOCK"/launchers/*; do
-    OLDPATH="switch_path"
-    NEWPATH="$USER_APPS"
-    sed -i "s%$OLDPATH%$NEWPATH%g" $f
-  done
-  # abort on error 
-  set -e
-  echo "LOGOFF REQUIRED" > /tmp/LOGOFF_FLAG
+# no error abort
+set +e
+rm "$USER_APPS"/chromixium*
+echo " copy in chromium desktop files and icons"
+cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/* "$USER_APPS"/
+cp "$CHROMIXIUM_SCRIPTS"/pixmaps/* "$APP_ICONS"/
+# if chrome is installed install chrome adjusted shortcuts
+PKG_NAME="google-chrome-stable"
+echo "Checking for $PKG_NAME"
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
+if [ "install ok installed" == "$PKG_OK" ]; then
+  echo " copy in chrome adjusted shortcuts and icons"
+  cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/* "$USER_APPS"/
 fi
+chown "$SYNC_USER:$SYNC_USER" "$USER_APPS"/*
+chmod "750" "$USER_APPS"/*
+
+# delete old launchers and copy in adjusted stock ones
+rm "$USER_DOCK"/launchers/chrom*
+cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/launchers/* "$USER_DOCK"/launchers/
+chown "$SYNC_USER:$SYNC_USER" "$USER_DOCK"/launchers/*
+chmod "750" "$USER_DOCK"/launchers/*
+# repoint launchers to user home directory 
+for f in "$USER_DOCK"/launchers/*; do
+  OLDPATH="switch_path"
+  NEWPATH="$USER_APPS"
+  sed -i "s%$OLDPATH%$NEWPATH%g" $f
+done
+# abort on error 
+set -e
+echo "LOGOFF REQUIRED" > /tmp/LOGOFF_FLAG
 #============= remap apps and launcher end ================================
 
 #============= home directories start ================================

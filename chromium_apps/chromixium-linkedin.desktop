@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=LinkedIn
-Exec=/usr/bin/chromium-browser --app=https://www.linkedin.com/
-Icon=chrome-https___www.linkedin.com_
+Exec=chromium-browser --app=https://www.linkedin.com/
+Icon=/usr/share/pixmaps/chromixium/linkedin.png
 StartupWMClass=www.linkedin.com
 NoDisplay=true

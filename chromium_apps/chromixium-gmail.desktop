@@ -5,7 +5,8 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Gmail
-Exec=/usr/bin/chromium-browser --app=https://www.gmail.com
-Icon=/usr/share/pixmaps/chromixium/gmail.png
+Exec=chromium-browser --app=https://www.gmail.com
+Icon=/usr/share/pixmaps/chromixium/chrome-pjkljhegncpnkpknbcohdijeoejaedia-Default.png
 StartupWMClass=www.gmail.com
+NoDisplay=false
 Categories=Network;Internet;

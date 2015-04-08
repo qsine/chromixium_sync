@@ -92,20 +92,32 @@ if [ ! -h "${SOURCE}" ]; then
     chmod "${PERM_SET}" $(find "${TARGET}" -type f)
     echo "  - file sync complete"
   else
-    # if not exist in stock install, create it 
+    # if SOURCE does not exist... 
     if [ ! -d "${SOURCE}" ]; then
-      . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${SOURCE##*/}" "${SOURCE}" "$USER_SET"
-      echo "a file is required for chromixium_sync" >> "${SOURCE}"/chrx-readme
-      chown  "$USER_SET:$USER_SET" "${SOURCE}"/chrx-readme
-      chmod  "644" "${SOURCE}"/chrx-readme
-      if [ "${RUN_MODE}" = "gui" ]; then
-        rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
-          "${SOURCE}"/ "${TARGET}"/
-      else
-        rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
-          "${SOURCE}"/ "${TARGET}"/
-      fi # gui/cmd
-    fi # dir not exist
+      # ...but TARGET does, sync TARGET to SOURCE
+      if [ -d "${TARGET}" ]; then
+        if [ "${RUN_MODE}" = "gui" ]; then
+          rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+            "${TARGET}" "${SOURCE}"
+        else
+          rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+            "${TARGET}" "${SOURCE}"
+        fi
+      else 
+        # ...no TARGET either, create source
+        . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${SOURCE##*/}" "${SOURCE}" "$USER_SET"
+        echo "a file is required for chromixium_sync" >> "${SOURCE}"/chrx-readme
+        chown  "$USER_SET:$USER_SET" "${SOURCE}"/chrx-readme
+        chmod  "644" "${SOURCE}"/chrx-readme
+        if [ "${RUN_MODE}" = "gui" ]; then
+          rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+            "${SOURCE}"/ "${TARGET}"/
+        else
+          rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+            "${SOURCE}"/ "${TARGET}"/
+        fi # gui/cmd
+      fi # target check
+    fi # source dir not exist
   fi
 # check if source link is valid
 elif [ -e "${SOURCE}" ]; then

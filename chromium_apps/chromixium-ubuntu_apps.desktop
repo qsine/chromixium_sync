@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Ubuntu Apps
-Exec=/usr/bin/chromium-browser --app=https://apps.ubuntu.com/cat/
+Exec=chromium-browser --app=https://apps.ubuntu.com/cat/
 Icon=Ubuntu
 StartupWMClass=apps.ubuntu.com__cat
 Categories=Network;Internet;

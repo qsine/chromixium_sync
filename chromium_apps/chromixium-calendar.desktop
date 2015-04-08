@@ -5,7 +5,8 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Calendar
-Exec=/usr/bin/chromium-browser "--app=https://www.google.com/calendar/render?pli=1"
-Icon=chrome-https___www.google.com_calendar_render_pli=1
-StartupWMClass=crx_ejjicmeblgpmajnghnpcppodonldlgfn
-NoDisplay=true
+Exec=chromium-browser "--app=https://www.google.com/calendar"
+Icon=/usr/share/pixmaps/chromixium/chrome-ejjicmeblgpmajnghnpcppodonldlgfn-Default.png
+StartupWMClass=www.google.com__calendar
+NoDisplay=false
+Categories=Office

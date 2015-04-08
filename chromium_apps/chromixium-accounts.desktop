@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Accounts
-Exec=/usr/bin/chromium-browser --app=https://accounts.google.com/ServiceLogin
-Icon=chrome-coobgpohoikkiipiblmjeljniedjpjpf-Default.png
+Exec=chromium-browser --app=https://accounts.google.com/ServiceLogin
+Icon=/usr/share/pixmaps/chromixium/google.png
 StartupWMClass=accounts.google.com__ServiceLogin
 Categories=System;

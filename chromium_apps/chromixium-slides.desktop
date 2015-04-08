@@ -5,8 +5,8 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Slides
-Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=aapocclcgogkmnckokdopfmhonfmgoek
-Icon=chrome-aapocclcgogkmnckokdopfmhonfmgoek-Default
-StartupWMClass=crx_aapocclcgogkmnckokdopfmhonfmgoek
+Exec=chromium-browser --app=https://docs.google.com/presentation
+Icon=/usr/share/pixmaps/chromixium/chrome-aapocclcgogkmnckokdopfmhonfmgoek-Default.png
+StartupWMClass=docs.google.com__presentation
 NoDisplay=false
 Categories=Office;

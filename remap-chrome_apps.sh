@@ -78,8 +78,9 @@ if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
   # no error abort
   set +e
   rm "$USER_APPS"/chromixium*
-  echo " copy in chromium desktop files"
+  echo " copy in chromium desktop files and icons"
   cp "$CHROMIXIUM_SCRIPTS"/chromium_apps/* "$USER_APPS"/
+  cp "$CHROMIXIUM_SCRIPTS"/pixmaps/* "$APP_ICONS"/
   # if chrome is installed install chrome adjusted shortcuts
   PKG_NAME="google-chrome-stable"
   echo "Checking for $PKG_NAME"
@@ -87,7 +88,6 @@ if [ "$CHROM_FILE_COUNT" -lt "35" ]; then
   if [ "install ok installed" == "$PKG_OK" ]; then
     echo " copy in chrome adjusted shortcuts and icons"
     cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/* "$USER_APPS"/
-    cp "$CHROMIXIUM_SCRIPTS"/chrome_apps/pixmaps/* "$APP_ICONS"/
   fi
   chown "$SYNC_USER:$SYNC_USER" "$USER_APPS"/*
   chmod "750" "$USER_APPS"/*

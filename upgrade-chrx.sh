@@ -14,8 +14,6 @@ fi
 # abort on error 
 set -e
 
-ASK4CHROME=0
-
 echo "05"; echo "# check for apt update/upgrade/cleanup"
 . $CHROMIXIUM_SCRIPTS/upgrade-apt.sh
 
@@ -30,6 +28,9 @@ else
   exit 1
   echo "30"; echo "#  -CHROMIXIUM_SCRIPTS installed, copy update from Git"
 fi
+chown "root:root" "$CHROMIXIUM_SCRIPTS"/*
+chmod "644" "$CHROMIXIUM_SCRIPTS"/*
+chmod "755" "$CHROMIXIUM_SCRIPTS"/*.sh
 
 # switch to chrome from chromium
 if [ $ASK4CHROME = 1 ]; then 
@@ -49,10 +50,6 @@ if [ $ASK4CHROME = 1 ]; then
       if [ "$?" = 0 ]; then
         echo "# Installing Chrome, please be patient"
         . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh
-      else
-        # don't ask for chrome install again
-        sed -i "s%ASK4CHROME=0%ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
-        sleep 1 
       fi
       # abort on error 
       set -e
@@ -65,9 +62,7 @@ if [ $ASK4CHROME = 1 ]; then
                   . $CHROMIXIUM_SCRIPTS/switch-to-chrome.sh
                   break
                   ;;
-          [Nn]* ) # don't ask for chrome install again
-                  sed -i "s%ASK4CHROME=0%ASK4CHROME=0%g" $CHROMIXIUM_SCRIPTS/upgrade-chrx.sh
-                  break
+          [Nn]* ) break
                   ;;
            * ) echo "Please answer y or n"
                ;;

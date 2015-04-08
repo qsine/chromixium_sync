@@ -5,8 +5,8 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Keep
-Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki
-Icon=chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default
-StartupWMClass=crx_hmjkmjkepdijhoojdojkdfohbdgmmhki
+Exec=chromium-browser --app=https://keep.google.com
+Icon=/usr/share/pixmaps/chromixium/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.png
+StartupWMClass=keep.google.com
 NoDisplay=false
 Categories=Office;

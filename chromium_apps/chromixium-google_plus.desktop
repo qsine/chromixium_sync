@@ -5,7 +5,8 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google+
-Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=dlppkpafhbajpcmmoheippocdidnckmm
-Icon=chrome-dlppkpafhbajpcmmoheippocdidnckmm-Default
-StartupWMClass=crx_dlppkpafhbajpcmmoheippocdidnckmm
-NoDisplay=true
+Exec=chromium-browser --app=https://plus.google.com
+Icon=/usr/share/pixmaps/chromixium/chrome-dlppkpafhbajpcmmoheippocdidnckmm-Default.png
+StartupWMClass=https://plus.google.com/
+NoDisplay=false
+Categories=Network;Internet;

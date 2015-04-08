@@ -15,18 +15,15 @@ set -e
 SYNC_USER="serveradmin"
 REPO_PROFILE="serveradmin"
 
-#  for f in "$CHROMIXIUM_SCRIPTS"/*.sh; do
-#    if [ "$f" != "$CHROMIXIUM_SCRIPTS"/test.sh ]; then
-#    OLDPATH='$CHROMIXIUM_SCRIPTS/custom-dir.sh'
-#    NEWPATH='. $CHROMIXIUM_SCRIPTS/custom-dir.sh'
-#    echo "$f"
-#    sed -i "s%$OLDPATH%$NEWPATH%g" $f
-#    fi
-#  done
-
-. /opt/chrxsync/chromixium_sync/set-paths.sh "serveradmin" "serveradmin"
-
-echo "$DEST_HOME"
+CHG_FILES=/opt/chrxsync/chromixium_sync/chromium_apps
+  for f in "$CHG_FILES"/*.desktop; do
+    if [ "$f" != "$CHROMIXIUM_SCRIPTS"/test.sh ]; then
+    OLD_STR='#!env xdg-open'
+    NEW_STR='#!/usr/bin/env xdg-open'
+    echo "$f"
+    sed -i "s%$OLD_STR%$NEW_STR%g" $f
+    fi
+  done
 
 
 #if [ $DIAG_MSG = 1 ]; then

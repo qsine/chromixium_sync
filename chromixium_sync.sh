@@ -14,6 +14,9 @@ echo "GOPATH:$GOPATH"
 GET_SCRIPTS="git" # "git" or "copy"
 DEF_NAME=$SUDO_USER
 
+# ask to install Chrome or not, default off
+ASK4CHROME=0
+
 # clear reboot and log off flags
 if [ -f "/tmp/REBOOT_FLAG" ]; then
   rm /tmp/REBOOT_FLAG
@@ -47,6 +50,7 @@ else
     echo "        --pull: pull config data from Google Drive to machine"
     echo "        --push_pull: push then pull config (Developer Mode)"
     echo "        --gui: select parameters via dialogs"
+    echo "        --ask4chrome: updates with switch-to-chrome option"
     echo "     repo_name: name of the repo to push/pull"
     echo "     user_name: Linux user name, must have valid /home directory"
     echo ""
@@ -64,6 +68,7 @@ case "$1" in
     --install )
         echo "  - installing applications for chromixium_sync"
         CONFIG_CODE="install"
+        ASK4CHROME=1
         ;;
     --update )
         echo "  - updating applications for chromixium_sync"
@@ -84,6 +89,10 @@ case "$1" in
     --gui )
         echo "  - run with Dialogs"
         CONFIG_CODE="gui"
+        ;;
+    --ask4chrome )
+        echo "  - enable Chrome install"
+        CONFIG_CODE="ask4chrome"
         ;;
     *)
         echo "  - invalid control code, exiting"
@@ -493,7 +502,8 @@ fi
 #---------------------------------------------------
 
 if [ "${RUN_MODE}" = "gui" ]; then
-  CONFIG_CODE=$(zenity  \
+  if [ $ASK4CHROME = 1 ]; then
+    CONFIG_CODE=$(zenity  \
                 --list  --text "Chromium Sync Config" \
                 --radiolist  --column "Pick" \
                 --column "Config" \
@@ -502,7 +512,28 @@ if [ "${RUN_MODE}" = "gui" ]; then
                     FALSE "pull" \
                     FALSE "push_pull" \
                   );
+  else
+    CONFIG_CODE=$(zenity  \
+                --list  --text "Chromium Sync Config" \
+                --radiolist  --column "Pick" \
+                --column "Config" \
+                    TRUE  "update" \
+                    FALSE "push" \
+                    FALSE "pull" \
+                    FALSE "push_pull" \
+                    FALSE "ask4chrome" \
+                  );
+  fi
 fi
+
+#============= ask4chrome start ================================
+if [ "$CONFIG_CODE" = 'ask4chrome' ]; then
+  # enable it for the update script
+  ASK4CHROME=1
+  CONFIG_CODE="update"
+fi 
+
+#============= ask4chrome end ================================
 
 #============= push start ================================
 if [ "$CONFIG_CODE" = 'push' -o "$CONFIG_CODE" = 'push_pull' ]; then

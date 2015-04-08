@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Twitter
-Exec=/usr/bin/chromium-browser --app=https://twitter.com/
-Icon=chrome-https___twitter.com_
+Exec=chromium-browser --app=https://twitter.com
+Icon=/usr/share/pixmaps/chromixium/twitter.png
 StartupWMClass=twitter.com
 NoDisplay=true

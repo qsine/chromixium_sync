@@ -5,8 +5,8 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Maps
-Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=lneaknkopdijkpnocmklfnjbeapigfbh
-Icon=chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default
-StartupWMClass=crx_lneaknkopdijkpnocmklfnjbeapigfbh
+Exec=chromium-browser --app=https://www.google.com/maps
+Icon=/usr/share/pixmaps/chromixium/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.png
+StartupWMClass=www.google.com__maps
 NoDisplay=false
 Categories=Network;Internet;

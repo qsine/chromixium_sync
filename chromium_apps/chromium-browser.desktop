@@ -176,6 +176,7 @@ Terminal=false
 X-MultipleArgs=false
 Type=Application
 Icon=chromium-browser
+NoDisplay=false
 Categories=Network;Internet;
 MimeType=text/html;text/xml;application/xhtml_xml;x-scheme-handler/http;x-scheme-handler/https;
 StartupWMClass=Chromium-browser

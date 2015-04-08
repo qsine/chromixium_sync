@@ -109,11 +109,12 @@ Comment[vi]=Truy cập Internet
 Comment[zh_CN]=访问互联网
 Comment[zh_HK]=連線到網際網路
 Comment[zh_TW]=連線到網際網路
-Exec=/usr/bin/google-chrome-stable %U
+Exec=chromium-browser %U
 Terminal=false
-Icon=google-chrome
+Icon=/usr/share/pixmaps/chromixium/google-chrome.png
 Type=Application
-Categories=Network;WebBrowser;
+NoDisplay=false
+Categories=Network;Internet;
 MimeType=text/html;text/xml;application/xhtml_xml;image/webp;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;
 X-Ayatana-Desktop-Shortcuts=NewWindow;NewIncognito
 
@@ -169,7 +170,7 @@ Name[uk]=Нове вікно
 Name[vi]=Cửa sổ Mới
 Name[zh_CN]=新建窗口
 Name[zh_TW]=開新視窗
-Exec=/usr/bin/google-chrome-stable
+Exec=chromium-browser
 TargetEnvironment=Unity
 
 [NewIncognito Shortcut Group]
@@ -222,5 +223,5 @@ Name[uk]=Нове вікно в режимі анонімного перегля
 Name[vi]=Cửa sổ ẩn danh mới
 Name[zh_CN]=新建隐身窗口
 Name[zh_TW]=新增無痕式視窗
-Exec=/usr/bin/google-chrome-stable --incognito
+Exec=chromium-browser --incognito
 TargetEnvironment=Unity

@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Blogger
-Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=lejliakmhcfhakneflmicaoikhbicggc
-Icon=chrome-lejliakmhcfhakneflmicaoikhbicggc-Default
-StartupWMClass=crx_lejliakmhcfhakneflmicaoikhbicggc
+Exec=chromium-browser --app=https://www.blogger.com/home
+Icon=/usr/share/pixmaps/chromixium/blogger.png
+StartupWMClass=www.blogger.com__home
 NoDisplay=true

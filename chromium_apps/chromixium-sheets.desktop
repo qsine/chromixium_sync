@@ -5,8 +5,8 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Sheets
-Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=felcaaldnbdncclmgdcncolpebgiejap
-Icon=chrome-felcaaldnbdncclmgdcncolpebgiejap-Default
-StartupWMClass=crx_felcaaldnbdncclmgdcncolpebgiejap
+Exec=chromium-browser --app=https://docs.google.com/spreadsheets
+Icon=/usr/share/pixmaps/chromixium/chrome-felcaaldnbdncclmgdcncolpebgiejap-Default.png
+StartupWMClass=docs.google.com__spreadsheets
 NoDisplay=false
 Categories=Office;

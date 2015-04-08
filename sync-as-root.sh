@@ -132,7 +132,7 @@ if [ ! -h "${SOURCE}" ]; then
         echo "# ...no TARGET either, creating ${SOURCE##*/}"
         sleep 1
         . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${SOURCE##*/}" "${SOURCE}" "$USER_SET"
-        echo "a file is required for chromixium_sync" >> "${SOURCE}"/chrx-readme
+        echo "a file is required for chromixium_sync" > "${SOURCE}"/chrx-readme
         chown  "$USER_SET:$USER_SET" "${SOURCE}"/chrx-readme
         chmod  "644" "${SOURCE}"/chrx-readme
         if [ "${RUN_MODE}" = "gui" ]; then

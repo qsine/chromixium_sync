@@ -24,7 +24,7 @@ REPO_PROFILE="serveradmin"
 #    sed -i "s%$OLD_STR%$NEW_STR%g" $f
 #    fi
 #  done
-echo " "
+echo "$(hostname) "
 TARGET=/etc/passwd
 echo "${TARGET%*${TARGET##*/}}"
 

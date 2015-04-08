@@ -40,7 +40,7 @@ fi
 # check argument 1
 if [ ! "$1" ]; then
   echo "No CONFIG_CODE specified. Aborting"
-  echo "  Type qsine-config.sh --help for info"
+  echo "  Type chromixium_sync.sh --help for info"
   exit 1
 else
   if [ "$1" = '--help' -o "$1" = '-h' ]; then

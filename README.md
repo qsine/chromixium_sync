@@ -51,8 +51,8 @@ In GUI mode a dialog prompts for repository name and user name.  Both default to
 After a machine has pushed, you can rename it in the Google Drive with a "-" to keep it safe or push again with another repo name.  Repo names are tested to regex standard so anything other than letters and numbers are disallowed.  To pull the protected repo, you need to remove the "-" from the name in the Google Drive.
 
 The scripts are in /opt/chrxsync/chromixium_sync.  To run from the command line, open a terminal then:
-
- - sudo bash /opt/chrxsync/chromixium_sync/chromixium_sync.sh config_code [repo_name] [user_name]
+ - cd /opt/chrxsync/chromixium_sync
+ - sudo ./chromixium_sync.sh config_code [repo_name] [user_name]
 
 Where:
  - config_code: controls what the installer does

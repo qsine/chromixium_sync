@@ -1,10 +1,10 @@
-After a setup there is a folder named "home_googlefiles" in the user repo and the user Desktop directory get linked to it.  This works okay because Chromixium doesn't display the contents on the desktop.  If this turns out to be a good feature in Chromixium, I am hoping Nautilus can be recompiled to show "GoogleFiles" or something saying it goes to Drive as opposed to the LocalFiles I created.
+After a setup there is a folder named "home_googlefiles" in the user repo and the user Desktop directory gets linked to it.  This works okay because Chromixium doesn't display the contents on the desktop.  If this turns out to be a good feature in Chromixium, I am hoping Nautilus can be recompiled to show "GoogleFiles" or something saying it is pushed/pulled to Drive as opposed to the LocalFiles directory I created for user files that only stay on the machine.
 
-"home_googlefiles" is created with a directory called .installs that can be accessed via Nautilus by clicking on Desktop and hitting CTRL-H (show hidden).  Any files for configuration can be kept in here but the scripts look for any file names starting with get- or build- and will run them if they have executable permissions.
+"home_googlefiles" is created with a directory called .installs that can be accessed via Nautilus by clicking on Desktop and hitting CTRL-H (show hidden).  Any files for configuration can be kept in here but the chromixium_sync script looks for any file names starting with get- or build- and will run them if they have executable permissions.
 
-Watchout when putting files in Desktop/.installs as a "pull" will clobber your data unless you "push-pull".
+Watchout when putting files in Desktop/.installs as a "pull" will clobber your data.  Hence the "push-pull" option.
 
-The files in this directory are some sample files that can me modified by anyone with some script building talents to ensure Chromixium installs the software you need not just bring across your settings.
+The files in this UserSamples are some scripts that can me modified by anyone with some script building talents to ensure Chromixium installs the software you need not just bring across your settings.
 
 build-freerdp.sh, for example sets up a build environment, compiles and installs FreeRDP so I can remote desktop to Windows machines.  When the script runs in --update mode, build-freerdp.sh refreshes the source code, recompiles and reinstalls.
 
@@ -12,6 +12,6 @@ build-qsine_machines.sh is where I put little config changes that are specific t
 
 get-apts.sh simply installs apps from repository.  Libre Office, eVince, and calculator are things I need on my machines.
 
-Anything installed from Ubuntu repo's will upgrade with apt-get.
+Anything installed from Ubuntu repo's will upgrade with apt-get.  The nice thing about putting the apps you want into these scripts is, they will reinstall for you if you wipe your machine and sync the fresh install.  This is not user friendly for novice users.  Time permitting I am hoping to improve this.
 
-You can modify these scripts and put them in your .installs folder for your applications.
+Feel free to modify these scripts and put them in your .installs folder for your applications.

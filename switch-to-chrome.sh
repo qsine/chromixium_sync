@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 01-Apr-2015
+# by Kevin Saruwatari, 08-Apr-2015
 # free to use/distribute with no warranty
 # removes chromium and pepperflash
 # installs chrome stable, .deb is in /tmp and will be deteled on restart
@@ -58,7 +58,7 @@ sleep 1
 
 # no error abort
 set +e
-PKG_NAME="google-chrome-stable"
+PKG_NAME="$CHROME_PKG"
 echo "26"; echo "# Checking for $PKG_NAME"
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
 if [ "" == "$PKG_OK" ]; then
@@ -66,17 +66,17 @@ if [ "" == "$PKG_OK" ]; then
   sleep 1
   cd /tmp
   echo "changed to:$(dirname "$(readlink -f "$0")")"
-  if [ -d /tmp/google-chrome-stable_current_i386.deb ]; then
-    rm /tmp/google-chrome-stable_current_i386.deb
+  if [ -d /tmp/${CHROME_PKG}_current_i386.deb ]; then
+    rm /tmp/${CHROME_PKG}_current_i386.deb
   fi
   echo "30"; echo "# Downloading $PKG_NAME."
   if [ "$RUN_MODE" = "gui" ]; then
-    wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb > /dev/null
+    wget -q https://dl.google.com/linux/direct/${CHROME_PKG}_current_i386.deb > /dev/null
   else
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
+    wget https://dl.google.com/linux/direct/${CHROME_PKG}_current_i386.deb
   fi
   echo "70"; echo "# Installing $PKG_NAME."
-  dpkg -i google-chrome-stable_current_i386.deb
+  dpkg -i ${CHROME_PKG}_current_i386.deb
   ln -s -f /usr/bin/google-chrome /usr/bin/chromium-browser
   echo "90"; echo "# Installing $PKG_NAME."
   echo "REBOOT REQUIRED" > /tmp/REBOOT_FLAG

@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 06-Apr-2015
+# by Kevin Saruwatari, 08-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -57,9 +57,10 @@ echo "20"; echo "# /home/user/.face: user icon on dock"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$DEST_HOME/.face" "$GOOGLE_DATA/$CHRMX_REPO/.face" "664" "$SYNC_USER"
 
 echo "21"; echo "# greeter user icon"
-#---------------------------------------------------
 echo "# Ignore greeter icon, use dock icon for pull"
-#
+
+echo "22"; echo "# /etc/passwd: user mugshot info"
+. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$SYS_ETC/passwd" "$GOOGLE_DATA/$CHRMX_ETC/passwd" "644" "$SYNC_USER"
 
 #:::::::::::::::::: sync directories :::::::::::::::::::::
 echo "30"; echo "# /etc/lightdm: greeter login"

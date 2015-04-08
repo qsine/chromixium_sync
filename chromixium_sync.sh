@@ -3,7 +3,7 @@
 echo ""
 echo "Running: chromixium_sync.sh"
 
-# by Kevin Saruwatari, 07-Apr-2015
+# by Kevin Saruwatari, 08-Apr-2015
 # free to use/distribute with no warranty
 # sync chromixium to Google Drive
 
@@ -14,6 +14,8 @@ echo "GOPATH:$GOPATH"
 GET_SCRIPTS="git" # "git" or "copy"
 DEF_NAME=$SUDO_USER
 
+# chrome package to use
+CHROME_PKG="google-chrome-stable"
 # ask to install Chrome or not, default off
 ASK4CHROME=0
 
@@ -50,7 +52,7 @@ else
     echo "        --pull: pull config data from Google Drive to machine"
     echo "        --push_pull: push then pull config (Developer Mode)"
     echo "        --gui: select parameters via dialogs"
-    echo "        --ask4chrome: updates with switch-to-chrome option"
+    echo "        --ask4chrome: updates with switch-to-chrome option (if it is not already installed)"
     echo "     repo_name: name of the repo to push/pull"
     echo "     user_name: Linux user name, must have valid /home directory"
     echo ""
@@ -245,6 +247,7 @@ DEST_HOME="/home/$SYNC_USER"
     USER_SCRNL="$DEST_HOME/.screenlayout"         # holds multi-monitor settings
     USER_APPS="$DEST_HOME/.local/share/applications"
 # root sync dirs
+SYS_ETC="/etc"
 LOGIN_PREF="/etc/lightdm"
 APP_ICONS="/usr/share/pixmaps/chromixium"
 WALLS_USR="/usr/share/wallpapers"
@@ -291,6 +294,7 @@ CHRMX_BASE="Chromixium"
 # root sync dirs
             CHRMX_ICONS="$CHRMX_REPO/usr_share_pixmaps_chromixium"
             CHRMX_WALLS="$CHRMX_REPO/usr_share_wallpapers"
+            CHRMX_ETC="$CHRMX_REPO/etc-files"
             CHRMX_LOGIN="$CHRMX_REPO/etc_lightdm"
 # setup GO home and PATH to binaries
 export GOPATH="$ODEKE_DRIVE"
@@ -500,9 +504,17 @@ if [ $DIAG_MSG == 1 ]; then
  echo "CS_STATE:$CS_STATE"
 fi
 #---------------------------------------------------
+# test if user should be asked for Chrome install
+# no error abort 
+set +e
+PKG_NAME="$CHROME_PKG"
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
+echo "40"; echo "Checking for $PKG_NAME"
+# abort on error 
+set -e
 
 if [ "${RUN_MODE}" = "gui" ]; then
-  if [ $ASK4CHROME = 1 ]; then
+  if [ $ASK4CHROME = 1 -o "$PKG_OK" = "install ok installed" ]; then
     CONFIG_CODE=$(zenity  \
                 --list  --text "Chromium Sync Config" \
                 --radiolist  --column "Pick" \

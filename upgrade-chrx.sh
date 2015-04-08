@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 07-Apr-2015
+# by Kevin Saruwatari, 08-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -36,7 +36,7 @@ chmod "755" "$CHROMIXIUM_SCRIPTS"/*.sh
 if [ $ASK4CHROME = 1 ]; then 
   # no error abort 
   set +e
-  PKG_NAME="google-chrome-stable"
+  PKG_NAME="$CHROME_PKG"
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $PKG_NAME|grep "install ok installed")
   echo "40"; echo "Checking for $PKG_NAME"
   # abort on error 

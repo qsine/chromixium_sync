@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
 #  sleep 1
 fi
 
-# by Kevin Saruwatari, 06-Apr-2015
+# by Kevin Saruwatari, 08-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer push/pull files
 
@@ -54,12 +54,11 @@ USER_SET="${4}"
 EXCL_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo ""
-
 # check if source is a link
 if [ ! -h "${SOURCE}" ]; then
-  # not a link, check if source is a directory
+  echo "# SOURCE not a link, check if it is a directory..."
   if [ -d "${SOURCE}" ]; then
-    echo "# ${SOURCE##*/} exists, syncing data to ${TARGET##*/}"
+    echo "# ...${SOURCE##*/} dir exists, syncing data to ${TARGET##*/}"
     sleep 1
     if [ "${RUN_MODE}" = "gui" ]; then
       rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
@@ -68,34 +67,52 @@ if [ ! -h "${SOURCE}" ]; then
       rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}"/ "${TARGET}"/
     fi
+    chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
     # always set the top directory to 755
     chmod 755 $(find "${TARGET}" -type d)
     # make sure a file exists
     if [ "$(ls -A ${TARGET})" ]; then
       chmod "${PERM_SET}" $(find "${TARGET}" -type f)
     fi
-    echo "  - dir sync complete"
-    chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
-  # check if source is a file
   elif [ -f "${SOURCE}" ]; then
+  echo "# ...${SOURCE##*/} file exists, syncing data to ${TARGET##*/}"
     echo "# ${SOURCE##*/} exists, syncing data to ${TARGET##*/}"
     sleep 1
+    . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${TARGET%*${TARGET##*/}}" "${TARGET%*${TARGET##*/}}" "${USER_SET}"
     if [ "${RUN_MODE}" = "gui" ]; then
-      rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+      rsync -a  --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}" "${TARGET}"
     else
       rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}" "${TARGET}"
     fi
     chown "${USER_SET}":"${USER_SET}" "${TARGET}"
-    # always set the top directory to 755
     chmod "${PERM_SET}" $(find "${TARGET}" -type f)
     echo "  - file sync complete"
   else
-    # if SOURCE does not exist... 
-    if [ ! -d "${SOURCE}" ]; then
-      # ...but TARGET does, sync TARGET to SOURCE
+    if [ ! -d "${SOURCE}" -a  ! -f "${SOURCE}" ]; then
+    echo "# ...${SOURCE##*/} does not exist..."
       if [ -d "${TARGET}" ]; then
+        echo "# ...but TARGET dir does, sync ${TARGET##*/} to ${SOURCE##*/}"
+        sleep 1
+        if [ "${RUN_MODE}" = "gui" ]; then
+          rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+            "${TARGET}"/ "${SOURCE}"/
+        else
+          rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+            "${TARGET}"/ "${SOURCE}"/
+        fi
+        chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
+        # always set the top directory to 755
+        chmod 755 $(find "${TARGET}" -type d)
+        # make sure a file exists
+        if [ "$(ls -A ${TARGET})" ]; then
+          chmod "${PERM_SET}" $(find "${TARGET}" -type f)
+        fi
+      elif [ -f "${TARGET}" ]; then
+        echo "# ...but TARGET file does, sync ${TARGET##*/} to ${SOURCE##*/}"
+        sleep 1
+        . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${SOURCE%*${SOURCE##*/}}" "${SOURCE%*${SOURCE##*/}}" "${USER_SET}"
         if [ "${RUN_MODE}" = "gui" ]; then
           rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
             "${TARGET}" "${SOURCE}"
@@ -103,8 +120,11 @@ if [ ! -h "${SOURCE}" ]; then
           rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
             "${TARGET}" "${SOURCE}"
         fi
+        chown "${USER_SET}":"${USER_SET}" "${SOURCE}"
+        chmod "${PERM_SET}" $(find "${SOURCE}" -type f)
       else 
-        # ...no TARGET either, create source
+        echo "# ...no TARGET either, creating ${SOURCE##*/}"
+        sleep 1
         . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${SOURCE##*/}" "${SOURCE}" "$USER_SET"
         echo "a file is required for chromixium_sync" >> "${SOURCE}"/chrx-readme
         chown  "$USER_SET:$USER_SET" "${SOURCE}"/chrx-readme
@@ -118,7 +138,7 @@ if [ ! -h "${SOURCE}" ]; then
         fi # gui/cmd
       fi # target check
     fi # source dir not exist
-  fi
+  fi # source is a dir
 # check if source link is valid
 elif [ -e "${SOURCE}" ]; then
   echo  "# ${SOURCE##*/} already linked, not synching"
@@ -127,7 +147,7 @@ else
   echo  "# ${SOURCE} link is broken, exiting."
   sleep 2
   exit 1
-fi
+fi # source is a link
 
 sleep 0.5
 

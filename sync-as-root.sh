@@ -79,6 +79,9 @@ if [ ! -h "${SOURCE}" ]; then
     echo "# ${SOURCE##*/} exists, syncing data to ${TARGET##*/}"
     sleep 1
     . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${TARGET%*${TARGET##*/}}" "${TARGET%*${TARGET##*/}}" "${USER_SET}"
+    chown "${USER_SET}":"${USER_SET}" "${TARGET%*${TARGET##*/}}"
+    # always set the top directory to 755
+    chmod 755 $(find "${TARGET%*${TARGET##*/}}" -type d)
     if [ "${RUN_MODE}" = "gui" ]; then
       rsync -a  --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
         "${SOURCE}" "${TARGET}"
@@ -113,6 +116,9 @@ if [ ! -h "${SOURCE}" ]; then
         echo "# ...but TARGET file does, sync ${TARGET##*/} to ${SOURCE##*/}"
         sleep 1
         . $CHROMIXIUM_SCRIPTS/custom-dir.sh "${SOURCE%*${SOURCE##*/}}" "${SOURCE%*${SOURCE##*/}}" "${USER_SET}"
+        chown "${USER_SET}":"${USER_SET}" "${SOURCE%*${SOURCE##*/}}"
+        # always set the top directory to 755
+        chmod 755 $(find "${SOURCE%*${SOURCE##*/}}" -type d)
         if [ "${RUN_MODE}" = "gui" ]; then
           rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
             "${TARGET}" "${SOURCE}"

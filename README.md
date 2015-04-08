@@ -32,6 +32,7 @@ Once the installation is complete, you can access the script by:
  - right clicking the desktop
  - navigate to Applications/System
  - click on Chromixium Sync (runs in GUI mode)
+
 or (and this is recommended for early days to get more troubleshooting feedback):
  - open a terminal
  - type the command as explained below
@@ -55,13 +56,13 @@ The scripts are in /opt/chrxsync/chromixium_sync.  To run from the command line,
 
 Where:
  - config_code: controls what the installer does
-          --install: install std programs & setup push/pull RUN FIRST!
-          --update: updates existing or installs new
-          --push: push machine config data to Google Drive
-          --pull: pull config data from Google Drive to machine
-          --push_pull: push then pull config (Developer Mode)
-          --gui: select parameters via dialogs
-          --ask4chrome: updates with switch-to-chrome option (if it is not already installed)
+   . --install: install std programs & setup push/pull RUN FIRST!
+   . --update: updates existing or installs new
+   . --push: push machine config data to Google Drive
+   . --pull: pull config data from Google Drive to machine
+   . --push_pull: push then pull config (Developer Mode)
+   . --gui: select parameters via dialogs
+   . --ask4chrome: updates with switch-to-chrome option (if it is not already installed)
  - repo_name: optional - name of the repo to push/pull
  - user_name: optional - Linux user name, must have valid /home directory
 

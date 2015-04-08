@@ -1,10 +1,9 @@
 # chromixium_sync
-Sync Chromixium user account to Google Drive
+Sync Chromixium user account settings to Google Drive
 
-#----------------------------------------------
 08-Apr-2015: pre-Alpha test only if you are brave!  Make an image of your system with CloneZilla first.
 
-Seems to be working okay on fresh install of Chromixium (root priveledges required):
+Seems to be working okay on fresh install of Chromixium (root privileges required):
  - cd /tmp
  - wget https://github.com/qsine/chromixium_sync/archive/master.zip
  - unzip master.zip
@@ -29,7 +28,7 @@ When the local buffer is initialized, it will give a link to Google to get permi
 Access to Google Drive is done via this: https://github.com/odeke-em/drive
 It is still actively being developed and may break (it has while I've been developing).  But it seems like a very good project.
 
-Once the installion is complete, you can access the script by:
+Once the installation is complete, you can access the script by:
  - right clicking the desktop
  - navigate to Applications/System
  - click on Chromixium Sync (runs in GUI mode)
@@ -70,4 +69,9 @@ The file structure gets modified by these scripts:
  - the paths are all in chromixium_sync.sh
  - look at remap-chrome_apps.sh, pull-from-drive.sh and push-to-drive.sh to see the changes
 
-The scripts will find and run user scripts in CHRMX_HFILES/.installs (Desktop/.installs) named get-* or build-*. These files can be used to install from repos, build from source, tweak changes if the repo is used to sync more than one machine, etc.
+In the spirit of ChromeOS most data should be saved in the cloud or on a server or be streamed from a server.  Users should not try to push/pull large amounts of their own data (movies, music, etc) with this utility.  Not only will it be slow but Google Drive will impose limits.  Hence:
+ - user working directories are remapped to LocalFiles which do not get pushed/pulled
+ - Desktop get linked to the repo and user can put files they want pushed/pulled into here.
+
+The scripts will find and run user scripts in hidden directory CHRMX_HFILES/.installs (Desktop/.installs) named get-* or build-*. These files can be used to install from repos, build from source, tweak changes if the repo is used to sync more than one machine, etc.  Desktop gets pushed/pulled and so after a pull, the script recommends running an update which will run any scripts you keep in there.
+

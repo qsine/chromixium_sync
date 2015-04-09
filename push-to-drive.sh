@@ -59,8 +59,9 @@ echo "20"; echo "# /home/user/.face: user icon on dock"
 echo "21"; echo "# greeter user icon"
 echo "# Ignore greeter icon, use dock icon for pull"
 
-echo "22"; echo "# /etc/passwd: user mugshot info"
-. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$SYS_ETC/passwd" "$GOOGLE_DATA/$CHRMX_ETC/passwd" "644" "$SYNC_USER"
+# Not safe
+#echo "22"; echo "# /etc/passwd: user mugshot info"
+#. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$SYS_ETC/passwd" "$GOOGLE_DATA/$CHRMX_ETC/passwd" "644" "$SYNC_USER"
 
 #:::::::::::::::::: sync directories :::::::::::::::::::::
 echo "30"; echo "# /etc/lightdm: greeter login"
@@ -68,9 +69,6 @@ echo "30"; echo "# /etc/lightdm: greeter login"
 
 echo "31"; echo "# /usr/share/pixmaps/chromixium: icons for home folder shortcuts"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$APP_ICONS" "$GOOGLE_DATA/$CHRMX_ICONS" "644" "$SYNC_USER"
-
-echo "32"; echo "# /usr/share/wallpapers: wallpaper selection"
-. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$WALLS_USR" "$GOOGLE_DATA/$CHRMX_WALLS" "664" "$SYNC_USER"
 
 #===================== push start ================================
 echo "40"; echo "# Preparing to push..."

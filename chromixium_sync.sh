@@ -518,7 +518,7 @@ set -e
 if [ "${RUN_MODE}" = "gui" ]; then
   if [ $ASK4CHROME = 1 -o "$PKG_OK" = "install ok installed" ]; then
     CONFIG_CODE=$(zenity  \
-                --list  --text "Chromium Sync Config" \
+                --list  --text "Chromium Sync Config Repo:$REPO_PROFILE User:$SYNC_USER" \
                 --radiolist  --column "Pick" \
                 --column "Config" \
                     TRUE  "update" \
@@ -528,7 +528,7 @@ if [ "${RUN_MODE}" = "gui" ]; then
                   );
   else
     CONFIG_CODE=$(zenity  \
-                --list  --text "Chromium Sync Config" \
+                --list  --text "Chromium Sync Config Repo:$REPO_PROFILE User:$SYNC_USER" \
                 --radiolist  --column "Pick" \
                 --column "Config" \
                     TRUE  "update" \

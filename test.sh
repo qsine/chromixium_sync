@@ -24,9 +24,11 @@ REPO_PROFILE="serveradmin"
 #    sed -i "s%$OLD_STR%$NEW_STR%g" $f
 #    fi
 #  done
-echo "$(hostname) "
-TARGET=/etc/passwd
-echo "${TARGET%*${TARGET##*/}}"
+
+ADMIN="serveradmin:x:1000:1000:"
+PFILE=/opt/chrxsync/chromixium_sync/passwd
+# c\ only accepts literal string
+sed -i /$ADMIN/c\serveradmin:x:1000:1000:Administrator,,4032489066,:/home/serveradmin:/bin/bash $PFILE
 
 #if [ $DIAG_MSG = 1 ]; then
   echo ""

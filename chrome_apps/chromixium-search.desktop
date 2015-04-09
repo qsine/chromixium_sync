@@ -8,5 +8,6 @@ Name=Google Search
 Exec=chromium-browser --profile-directory=Default --app-id=coobgpohoikkiipiblmjeljniedjpjpf
 Icon=chrome-coobgpohoikkiipiblmjeljniedjpjpf-Default
 StartupWMClass=crx_coobgpohoikkiipiblmjeljniedjpjpf
-NoDisplay=true
+NoDisplay=false
+Categories=Network;Internet;
 

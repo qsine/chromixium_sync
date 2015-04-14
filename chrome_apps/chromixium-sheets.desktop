@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Sheets
-Exec=chromium-browser --profile-directory=Default --app-id=felcaaldnbdncclmgdcncolpebgiejap
+Exec=chromium-browser --disable-gpu --profile-directory=Default --app-id=felcaaldnbdncclmgdcncolpebgiejap
 Icon=/usr/share/pixmaps/chromixium/chrome-felcaaldnbdncclmgdcncolpebgiejap-Default.png
 StartupWMClass=crx_felcaaldnbdncclmgdcncolpebgiejap
 NoDisplay=false

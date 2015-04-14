@@ -1,7 +1,7 @@
 # chromixium_sync
 Sync Chromixium user account settings to Google Drive
 
-08-Apr-2015: pre-Alpha test only if you are brave!  Make an image of your system with CloneZilla first.
+13-Apr-2015: pre-Alpha test only if you are brave!  Make an image of your system with CloneZilla first.
 
 Seems to be working okay on fresh install of Chromixium (root privileges required):
  - cd /tmp
@@ -16,7 +16,6 @@ To specify a custom repo name:
 
 To specify another user (must exist on the machine):
  - sudo ./chromixium_sync.sh --install repo_name user_name
-  * I have not tested push/pull into other users yet.
 
 Note that installing with custom names will create a shortcut with the custom names as the default.  Edit the chromixium_sync.desktop file in ~/.local/share/applications to change names.
 

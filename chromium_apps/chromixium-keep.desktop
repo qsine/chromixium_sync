@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Keep
-Exec=chromium-browser --app=https://keep.google.com
+Exec=chromium-browser --disable-gpu --app=https://keep.google.com
 Icon=/usr/share/pixmaps/chromixium/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.png
 StartupWMClass=keep.google.com
 NoDisplay=false

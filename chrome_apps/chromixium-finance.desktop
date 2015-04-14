@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Finance
-Exec=chromium-browser --profile-directory=Default --app-id=fcgckldmmjdbpdejkclmfnnnehhocbfp
+Exec=chromium-browser --disable-gpu --profile-directory=Default --app-id=fcgckldmmjdbpdejkclmfnnnehhocbfp
 Icon=/usr/share/pixmaps/chromixium/chrome-fcgckldmmjdbpdejkclmfnnnehhocbfp-Default.png
 StartupWMClass=crx_fcgckldmmjdbpdejkclmfnnnehhocbfp
 NoDisplay=true

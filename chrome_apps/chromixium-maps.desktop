@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Maps
-Exec=chromium-browser --profile-directory=Default --app-id=lneaknkopdijkpnocmklfnjbeapigfbh
+Exec=chromium-browser --disable-gpu --profile-directory=Default --app-id=lneaknkopdijkpnocmklfnjbeapigfbh
 Icon=/usr/share/pixmaps/chromixium/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.png
 StartupWMClass=crx_lneaknkopdijkpnocmklfnjbeapigfbh
 NoDisplay=false

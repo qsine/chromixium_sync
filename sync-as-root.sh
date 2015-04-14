@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
 #  sleep 1
 fi
 
-# by Kevin Saruwatari, 08-Apr-2015
+# by Kevin Saruwatari, 13-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer push/pull files
 
@@ -70,8 +70,8 @@ if [ ! -h "${SOURCE}" ]; then
     chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
     # always set the directories to 755
     chmod "755" $(find "${TARGET}" -type d)
-    # make sure a file exists
-    if [ "$(ls -A ${TARGET})" ]; then
+    # make sure a file exists, permission setting = 999 means don't set
+    if [ "$(ls -A ${TARGET})" -a "${PERM_SET}" != "999" ]; then
       chmod "${PERM_SET}" $(find "${TARGET}" -type f)
     fi
   elif [ -f "${SOURCE}" ]; then
@@ -91,7 +91,10 @@ if [ ! -h "${SOURCE}" ]; then
     fi
     # owner/permission on file
     chown "${USER_SET}":"${USER_SET}" "${TARGET}"
-    chmod "${PERM_SET}" "${TARGET}"
+    # permission setting = 999 means don't set
+    if [ "${PERM_SET}" != "999" ]; then
+      chmod "${PERM_SET}" "${TARGET}"
+    fi
   else
     if [ ! -d "${SOURCE}" -a  ! -f "${SOURCE}" ]; then
     echo "# ...${SOURCE##*/} does not exist..."
@@ -111,8 +114,8 @@ if [ ! -h "${SOURCE}" ]; then
         chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
         # always set the directories to 755
         chmod "755" $(find "${TARGET}" -type d)
-        # make sure a file exists
-        if [ "$(ls -A ${TARGET})" ]; then
+        # make sure a file exists, permission setting = 999 means don't set
+        if [ "$(ls -A ${TARGET})" -a "${PERM_SET}" != "999" ]; then
           chmod "${PERM_SET}" $(find "${TARGET}" -type f)
         fi
       elif [ -f "${TARGET}" ]; then
@@ -133,7 +136,10 @@ if [ ! -h "${SOURCE}" ]; then
         # don't set ownership on source it will happen next push
         PUSH_REQD=1
         chown "${USER_SET}":"${USER_SET}" "${TARGET}"
-        chmod "${PERM_SET}" "${TARGET}"
+        # permission setting = 999 means don't set
+        if [ "${PERM_SET}" != "999" ]; then
+          chmod "${PERM_SET}" "${TARGET}"
+        fi
       else 
         echo "# ...no TARGET either, creating ${SOURCE##*/}"
         sleep 1
@@ -153,7 +159,27 @@ if [ ! -h "${SOURCE}" ]; then
   fi # source is a dir
 # check if source link is valid
 elif [ -e "${SOURCE}" ]; then
-  echo  "# ${SOURCE##*/} already linked, not synching"
+  # test if link is the same as the target dir
+  if [ "$(readlink -f ${SOURCE})" = "${TARGET}" ]; then
+    echo  "# ${SOURCE##*/} already linked, not synching"
+  else
+    echo "# ...changed repo, syncing data to ${TARGET##*/}"
+    sleep 1
+    if [ "${RUN_MODE}" = "gui" ]; then
+      rsync -a --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+        "${SOURCE}"/ "${TARGET}"/
+    else
+      rsync -aP --links --delete --exclude-from "$EXCL_DIR/sync-excludes" \
+        "${SOURCE}"/ "${TARGET}"/
+    fi
+    chown "${USER_SET}":"${USER_SET}" -R "${TARGET}"
+    # always set the directories to 755
+    chmod "755" $(find "${TARGET}" -type d)
+    # make sure a file exists
+    if [ "$(ls -A ${TARGET})" -a "${PERM_SET}" != "999" ]; then
+      chmod "${PERM_SET}" $(find "${TARGET}" -type f)
+    fi
+  fi
   sleep 1
 else
   echo  "# ${SOURCE} link is broken, exiting."

@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google+
-Exec=chromium-browser --app=https://plus.google.com
+Exec=chromium-browser --disable-gpu --app=https://plus.google.com
 Icon=/usr/share/pixmaps/chromixium/chrome-dlppkpafhbajpcmmoheippocdidnckmm-Default.png
 StartupWMClass=https://plus.google.com/
 NoDisplay=false

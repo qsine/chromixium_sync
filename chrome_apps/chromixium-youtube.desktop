@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=YouTube
-Exec=chromium-browser --profile-directory=Default --app-id=blpcfgokakmgnkcojhhkbfbldkacnbeo
+Exec=chromium-browser --disable-gpu --profile-directory=Default --app-id=blpcfgokakmgnkcojhhkbfbldkacnbeo
 Icon=/usr/share/pixmaps/chromixium/chrome-blpcfgokakmgnkcojhhkbfbldkacnbeo-Default.png
 StartupWMClass=crx_blpcfgokakmgnkcojhhkbfbldkacnbeo
 NoDisplay=false

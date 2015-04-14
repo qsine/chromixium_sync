@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 08-Apr-2015
+# by Kevin Saruwatari, 13-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -109,33 +109,29 @@ echo "LOGOFF REQUIRED" > /tmp/LOGOFF_FLAG
 # make the user custom script directory
 . $CHROMIXIUM_SCRIPTS/custom-dir.sh "CHRMX_UCUST" "$GOOGLE_DATA/$CHRMX_UCUST" "$SYNC_USER"
 
-# make sure user-dir update is off so manual changes stick 
-echo "enabled=False" > ~/.config/user-dirs.conf
-
 # check if home Desktop directory is not linked
-if [ ! -h "$DEST_HOME/Desktop" ]; then
+if [ ! -h "$USER_HFILES" ]; then
   # and if it still exists
-  if [ -d "$DEST_HOME/Desktop" ]; then
+  if [ -d "$USER_HFILES" ]; then
     # if there are files move them
-    if [ "$(ls -A $DEST_HOME/Desktop)" ]; then
-      mv "$DEST_HOME/Desktop/"* "$GOOGLE_DATA/$CHRMX_HFILES/"
+    if [ "$(ls -A $USER_HFILES)" ]; then
+      mv "$USER_HFILES/"* "$GOOGLE_DATA/$CHRMX_HFILES/"
     fi
     # get rid of it
-    rmdir "$DEST_HOME/Desktop"
+    rmdir "$USER_HFILES"
   fi
-  ln -s -f "$GOOGLE_DATA/$CHRMX_HFILES" "$DEST_HOME/Desktop"
+  ln -s -f "$GOOGLE_DATA/$CHRMX_HFILES" "$USER_HFILES"
   echo "  - USER_HOMEPP:$USER_HOMEPP link created"
-else
-  rm "$DEST_HOME/Desktop"
-  ln -s -f "$GOOGLE_DATA/$CHRMX_HFILES" "$DEST_HOME/Desktop"
-  echo "  - USER_HOMEPP:$USER_HOMEPP link updated"
 fi
+
+# make sure user-dir update is off so manual changes stick 
+echo "enabled=False" > ~/.config/user-dirs.conf
 
 # create LocalFiles in user home that does not push/pull to Google Drive
 . $CHROMIXIUM_SCRIPTS/custom-dir.sh "LOCAL_FILES" "$LOCAL_FILES" "$SYNC_USER"
 
 # move home directories and reconfig user dirs
-if [ -d "$DEST_HOME/Desktop" ]; then
+if [ -d "$USER_HFILES" ]; then
   echo "Desktop is used to push/pull files to Google Drive"
 fi
 if [ -d "$DEST_HOME/Documents" ]; then
@@ -182,6 +178,7 @@ if [ -d "$DEST_HOME/Videos" ]; then
 fi
 
 #============= home directories end ================================
+
 
 if [ $DIAG_MSG = 1 ]; then
   echo " "

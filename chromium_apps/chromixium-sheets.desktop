@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Sheets
-Exec=chromium-browser --app=https://docs.google.com/spreadsheets
+Exec=chromium-browser --disable-gpu --app=https://docs.google.com/spreadsheets
 Icon=/usr/share/pixmaps/chromixium/chrome-felcaaldnbdncclmgdcncolpebgiejap-Default.png
 StartupWMClass=docs.google.com__spreadsheets
 NoDisplay=false

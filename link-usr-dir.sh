@@ -70,7 +70,10 @@ echo "# repo okay, setup/verify link for ${ORIG_PATH##*/}"
 sleep 1
 # always set the top directory to 755
 chmod 755 $(find "${REPO_PATH}" -type d)
-chmod "${PERM_SET}" $(find "${REPO_PATH}" -type f)
+# permission setting = 999 means don't set
+if [ "${PERM_SET}" != "999" ]; then
+  chmod "${PERM_SET}" $(find "${REPO_PATH}" -type f)
+fi
 
 # check if directory is already linked
 if [ ! -h "${ORIG_PATH}" ]; then

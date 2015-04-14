@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Keep
-Exec=chromium-browser --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki
+Exec=chromium-browser --disable-gpu --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki
 Icon=/usr/share/pixmaps/chromixium/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.png
 StartupWMClass=crx_hmjkmjkepdijhoojdojkdfohbdgmmhki
 NoDisplay=false

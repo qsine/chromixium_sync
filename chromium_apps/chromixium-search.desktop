@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Search
-Exec=chromium-browser --app=https://encrypted.google.com
+Exec=chromium-browser --disable-gpu --app=https://encrypted.google.com
 Icon=/usr/share/pixmaps/chromixium/chrome-coobgpohoikkiipiblmjeljniedjpjpf-Default.png
 StartupWMClass=encrypted.google.com
 NoDisplay=false

@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Blogger
-Exec=chromium-browser --app=https://www.blogger.com/home
+Exec=chromium-browser --disable-gpu --app=https://www.blogger.com/home
 Icon=/usr/share/pixmaps/chromixium/blogger.png
 StartupWMClass=www.blogger.com__home
 NoDisplay=true

@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 08-Apr-2015
+# by Kevin Saruwatari, 13-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -76,7 +76,6 @@ fi # end ask for chrome
 echo "80"; echo "#  ..remap chrome apps"
 sleep 1
 . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
-
 
 # echo "# User installations"
 sleep 1

@@ -15,20 +15,20 @@ set -e
 SYNC_USER="serveradmin"
 REPO_PROFILE="serveradmin"
 
-#CHG_FILES=/opt/chrxsync/chromixium_sync/chromium_apps
-#  for f in "$CHG_FILES"/*.desktop; do
-#    if [ "$f" != "$CHROMIXIUM_SCRIPTS"/test.sh ]; then
-#    OLD_STR='#!env xdg-open'
-#    NEW_STR='#!/usr/bin/env xdg-open'
-#    echo "$f"
-#    sed -i "s%$OLD_STR%$NEW_STR%g" $f
-#    fi
-#  done
+CHG_FILES=/opt/chrxsync/chromixium_sync/chrome_apps
+  for f in "$CHG_FILES"/*.desktop; do
+    if [ "$f" != "$CHROMIXIUM_SCRIPTS"/test.sh ]; then
+    OLD_STR='Exec=chromium-browser'
+    NEW_STR='Exec=chromium-browser --disable-gpu'
+    echo "$f"
+    sed -i "s%$OLD_STR%$NEW_STR%g" $f
+    fi
+  done
 
-ADMIN="serveradmin:x:1000:1000:"
-PFILE=/opt/chrxsync/chromixium_sync/passwd
+#ADMIN="serveradmin:x:1000:1000:"
+#PFILE=/opt/chrxsync/chromixium_sync/passwd
 # c\ only accepts literal string
-sed -i /$ADMIN/c\serveradmin:x:1000:1000:Administrator,,4032489066,:/home/serveradmin:/bin/bash $PFILE
+#sed -i /$ADMIN/c\serveradmin:x:1000:1000:Administrator,,4032489066,:/home/serveradmin:/bin/bash $PFILE
 
 #if [ $DIAG_MSG = 1 ]; then
   echo ""

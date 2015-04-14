@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Calendar
-Exec=chromium-browser "--app=https://www.google.com/calendar"
+Exec=chromium-browser --disable-gpu "--app=https://www.google.com/calendar"
 Icon=/usr/share/pixmaps/chromixium/chrome-ejjicmeblgpmajnghnpcppodonldlgfn-Default.png
 StartupWMClass=www.google.com__calendar
 NoDisplay=false

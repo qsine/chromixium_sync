@@ -5,8 +5,8 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Drive
-#Exec=chromium-browser --app=https://drive.google.com/drive
-Exec=chromium-browser https://drive.google.com/drive/my-drive
+#Exec=chromium-browser --disable-gpu --app=https://drive.google.com/drive
+Exec=chromium-browser --disable-gpu https://drive.google.com/drive/my-drive
 Icon=chrome-apdfllckaahabafndbhieahigkjlhalf-Default
 StartupWMClass=drive.google.com__drive
 NoDisplay=false

@@ -3,7 +3,7 @@
 echo ""
 echo "Running: chromixium_sync.sh"
 
-# by Kevin Saruwatari, 08-Apr-2015
+# by Kevin Saruwatari, 13-Apr-2015
 # free to use/distribute with no warranty
 # sync chromixium to Google Drive
 
@@ -238,6 +238,7 @@ DEST_HOME="/home/$SYNC_USER"
     # Local files in home that will not go to Google Drive 
     LOCAL_FILES="$DEST_HOME/LocalFiles"
 # user sync/link dirs
+    USER_HFILES="$DEST_HOME/Desktop"
     USER_GTK2="$DEST_HOME/.config/gtk-2.0"
     USER_GTK3="$DEST_HOME/.config/gtk-3.0"
     USER_CLOCK="$DEST_HOME/.config/lxpanel"
@@ -659,11 +660,13 @@ fi
 
 #============= check for push start ================================
 
-if [ "$PUSH_REQD" = "1" ]; then
-  zenity --info --text="PUSH IS REQUIRED, perform after logout or power cycle"
-else
-  echo ""
-  echo "Exiting: chromixium_sync.sh"
+if [ "$PUSH_REQD" = "1" -a $SUDO_USER = $SYNC_USER ]; then
+  if [ "$RUN_MODE" = "gui" ]; then
+    zenity --info --text="PUSH IS REQUIRED, perform after logout or power cycle"
+  else
+    echo ""
+    echo "PUSH IS REQUIRED, perform after logout or power cycle"
+  fi
 fi
 
 #============= check for push end ================================
@@ -678,7 +681,7 @@ else
 fi
 
 # reboot if required
-if [ -f "/tmp/REBOOT_FLAG" ]; then
+if [ -f "/tmp/REBOOT_FLAG" -a $SUDO_USER = $SYNC_USER ]; then
     if [ "$RUN_MODE" = "gui" ]; then
       # no error abort 
       set +e
@@ -706,7 +709,7 @@ if [ -f "/tmp/REBOOT_FLAG" ]; then
 fi # end restart
 
 # log off if required
-if [ -f "/tmp/LOGOFF_FLAG" ]; then
+if [ -f "/tmp/LOGOFF_FLAG" -a $SUDO_USER = $SYNC_USER ]; then
     if [ "$RUN_MODE" = "gui" ]; then
       # no error abort 
       set +e
@@ -732,4 +735,3 @@ if [ -f "/tmp/LOGOFF_FLAG" ]; then
       done
     fi # end gui/cmd line confirm
 fi
-

@@ -6,7 +6,7 @@ if [ $DIAG_MSG = 1 ]; then
   sleep 1
 fi
 
-# by Kevin Saruwatari, 08-Apr-2015
+# by Kevin Saruwatari, 13-Apr-2015
 # free to use/distribute with no warranty
 # for use with Qsine installer
 # call with "." to inherit environment variables from parent
@@ -47,35 +47,42 @@ chown -R "$SYNC_USER":"$SYNC_USER" "$CHRMX_REPO"
 . $CHROMIXIUM_SCRIPTS/remap-chrome_apps.sh
 
 #:::::::::::::::::: link user directories :::::::::::::::::::::
-echo "61"; echo "# gtk2: misc file/desktop settings"
+# permission setting = 999 means don't set
+
+echo "61"; echo "# Desktop: user Desktop files"
+. $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_HFILES" "$USER_HFILES" "999"
+
+echo "62"; echo "# gtk2: misc file/desktop settings"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_GTK2" "$USER_GTK2" "664"
 
-echo "62"; echo "# gtk3: misc file/desktop settings"
+echo "63"; echo "# gtk3: misc file/desktop settings"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_GTK3" "$USER_GTK3" "664"
 
-echo "63"; echo "# lxpanel: clock/date settings"
+echo "64"; echo "# lxpanel: clock/date settings"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_CLOCK" "$USER_CLOCK" "664"
 
-echo "64"; echo "# nautilus: file manager settings"
+echo "65"; echo "# nautilus: file manager settings"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_NAUT" "$USER_NAUT" "664"
 
-echo "65"; echo "# nitrogen: current wallpaper settings"
+echo "66"; echo "# nitrogen: current wallpaper settings"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_UWALL" "$USER_UWALL" "644"
 
-echo "66"; echo "# ob-autostart: user autostart"
+echo "67"; echo "# ob-autostart: user autostart"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_ASTART" "$USER_ASTART" "644"
 
-echo "67"; echo "# openbox: menu settings"
+echo "68"; echo "# openbox: menu settings"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_MENU" "$USER_MENU" "644"
 
-echo "68"; echo "# plank: dock settings"
+echo "69"; echo "# plank: dock settings"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_DOCK" "$USER_DOCK" "750"
 
-echo "69"; echo "# screenlayout: multi-monitor settings"
+echo "70"; echo "# screenlayout: multi-monitor settings"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_SCRNL" "$USER_SCRNL" "750"
 
-echo "70"; echo "# applications: home folder shortcuts"
+echo "71"; echo "# applications: home folder shortcuts"
 . $CHROMIXIUM_SCRIPTS/link-usr-dir.sh "$GOOGLE_DATA/$CHRMX_UAPPS" "$USER_APPS" "750"
+
+#:::::::::::::::::: NOTE: do not link single files :::::::::::::::::::::
 
 #:::::::::::::::::: sync files :::::::::::::::::::::
 echo "80"; echo "# /home/user/.face: user icon on dock"
@@ -93,6 +100,9 @@ echo "91"; echo "# /usr/share/pixmaps/chromixium: icons for home folder shortcut
 
 echo "92"; echo "# /usr/share/wallpapers: wallpaper selection"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$GOOGLE_DATA/$CHRMX_WALLS" "$WALLS_USR" "644" "root"
+
+# setup/maintain home link to repo 
+. $CHROMIXIUM_SCRIPTS/remap-home.sh
 
 # must change back to scripts directory
 cd "$CHROMIXIUM_SCRIPTS"

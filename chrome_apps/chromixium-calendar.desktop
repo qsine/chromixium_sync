@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Calendar
-Exec=chromium-browser --profile-directory=Default --app-id=ejjicmeblgpmajnghnpcppodonldlgfn
+Exec=chromium-browser --disable-gpu --profile-directory=Default --app-id=ejjicmeblgpmajnghnpcppodonldlgfn
 Icon=/usr/share/pixmaps/chromixium/chrome-ejjicmeblgpmajnghnpcppodonldlgfn-Default.png
 StartupWMClass=crx_ejjicmeblgpmajnghnpcppodonldlgfn
 NoDisplay=false

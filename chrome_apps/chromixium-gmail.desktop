@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Gmail
-Exec=chromium-browser --profile-directory=Default --app-id=pjkljhegncpnkpknbcohdijeoejaedia
+Exec=chromium-browser --disable-gpu --profile-directory=Default --app-id=pjkljhegncpnkpknbcohdijeoejaedia
 Icon=/usr/share/pixmaps/chromixium/chrome-pjkljhegncpnkpknbcohdijeoejaedia-Default.png
 StartupWMClass=crx_pjkljhegncpnkpknbcohdijeoejaedia
 NoDisplay=false

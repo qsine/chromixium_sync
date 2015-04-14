@@ -5,7 +5,7 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Google Drawings
-Exec=chromium-browser --app=https://docs.google.com/drawings
+Exec=chromium-browser --disable-gpu --app=https://docs.google.com/drawings
 Icon=/usr/share/pixmaps/chromixium/chrome-mkaakpdehdafacodkgkpghoibnmamcme-Default.png
 StartupWMClass=docs.google.com__drawings
 NoDisplay=true

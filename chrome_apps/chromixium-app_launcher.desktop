@@ -4,7 +4,7 @@
 Version=1.0
 Name=App Launcher
 Comment=Access all your Google Apps
-Exec=chromium-browser --show-app-list
+Exec=chromium-browser --disable-gpu --show-app-list
 Terminal=false
 Type=Application
 Icon=/usr/share/pixmaps/chromixium/chrome-applist.png

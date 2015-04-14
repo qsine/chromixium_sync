@@ -1,7 +1,7 @@
 # chromixium_sync
 Sync Chromixium user account settings to Google Drive
 
-13-Apr-2015: pre-Alpha test only if you are brave!  Make an image of your system with CloneZilla first.
+14-Apr-2015: pre-Alpha test only if you are brave!  Make an image of your system with CloneZilla first.
 
 Seems to be working okay on fresh install of Chromixium (root privileges required):
  - cd /tmp
@@ -67,7 +67,7 @@ Where:
 
 The file structure gets modified by these scripts:
  - the paths are all in chromixium_sync.sh
- - look at remap-chrome_apps.sh, pull-from-drive.sh and push-to-drive.sh to see the changes
+ - look at remap-chrome_apps.sh, remap-home.sh, pull-from-drive.sh and push-to-drive.sh to see the changes
 
 In the spirit of ChromeOS most data should be saved in the cloud or on a server or be streamed from a server.  Users should not try to push/pull large amounts of their own data (movies, music, etc) with this utility.  Not only will it be slow but Google Drive will impose limits.  Hence:
  - user working directories are remapped to LocalFiles which do not get pushed/pulled

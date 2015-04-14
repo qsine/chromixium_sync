@@ -671,8 +671,6 @@ fi
 
 #============= check for push end ================================
 
-
-
 if [ "$RUN_MODE" = "gui" ]; then
   zenity --info --text="Chromixium Sync complete."
 else

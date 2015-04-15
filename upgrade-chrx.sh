@@ -90,7 +90,7 @@ if [ "$(ls -A $USER_INS_PATH)" ]; then
   GET_FILE_CNT=$(ls $USER_INS_PATH/* | grep $USER_INS_PATH/get- | wc -l)
   if [ -d $USER_INS_PATH -a $GET_FILE_CNT -gt 0 ]; then
   echo "# Installing $GET_FILE_CNT user apt scripts"
-  sleep 2
+  sleep 1
     if [ "${RUN_MODE}" = "gui" ]; then
       (
       for f in $USER_INS_PATH/get-*; do
@@ -120,7 +120,7 @@ if [ "$(ls -A $USER_INS_PATH)" ]; then
   BUILD_FILE_CNT=$(ls $USER_INS_PATH/* | grep $USER_INS_PATH/build- | wc -l)
   if [ -d $USER_INS_PATH -a $BUILD_FILE_CNT -gt 0 ]; then
     echo "# Installing $BUILD_FILE_CNT user build scripts"
-    sleep 2
+    sleep 1
     if [ "${RUN_MODE}" = "gui" ]; then
       (
       for f in $USER_INS_PATH/build-*; do

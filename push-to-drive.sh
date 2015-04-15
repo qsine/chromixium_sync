@@ -73,6 +73,9 @@ echo "30"; echo "# /etc/lightdm: greeter login"
 echo "31"; echo "# /usr/share/pixmaps/chromixium: icons for home folder shortcuts"
 . $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$APP_ICONS" "$GOOGLE_DATA/$CHRMX_ICONS" "644" "$SYNC_USER"
 
+echo "32"; echo "# /usr/share/wallpapers: wallpaper selection"
+. $CHROMIXIUM_SCRIPTS/sync-as-root.sh "$WALLS_USR" "$GOOGLE_DATA/$CHRMX_WALLS" "644" "root"
+
 #===================== push start ================================
 echo "40"; echo "# Preparing to push..."
 if [ "${RUN_MODE}" = "gui" ]; then
